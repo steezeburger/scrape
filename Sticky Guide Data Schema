@@ -1,0 +1,33 @@
+Sticky Guide Data Schema
+Name
+Reviews
+Stars
+Short Description
+Strength
+Type
+Price each
+Price gram
+Price eigth
+Price quarter
+Price half
+Price ounce
+Details link
+Flavor
+Image
+Density
+
+
+Sticky Guide scraping schema
+
+https://www.stickyguide.com/dispensaries/shambhala-healing-center/menu.html?type_name=Edibles
+
+-	Get list of Locations
+
+-- 		Get list of Dispensaries per Location
+
+---			Get Menu per location
+
+----			Get item group
+
+-----				Loop through group through selectors and store meta data
+
