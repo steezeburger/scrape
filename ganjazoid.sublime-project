@@ -2,7 +2,12 @@
 	"folders":
 	[
 		{
+			"follow_symlinks": true,
 			"path": "/Users/KBK/Dropbox/ganjazoid2/scrape"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "/Users/newuser/Dropbox/ganjazoid2/scrape"
 		}
 	]
 }
