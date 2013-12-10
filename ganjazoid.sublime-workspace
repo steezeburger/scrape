@@ -1,0 +1,645 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"spe",
+				"specialCharacters"
+			],
+			[
+				"strre",
+				"str_replace"
+			],
+			[
+				"is_",
+				"is_bool"
+			],
+			[
+				"option",
+				"addOptions"
+			],
+			[
+				"address",
+				"addressdetail"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "stickyguide.js",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 107.0,
+		"selected_items":
+		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Package control",
+				"Package Control: Add Channel"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"pacl",
+				"Package Control: List Packages"
+			],
+			[
+				"Package ",
+				"Preferences: Browse Packages"
+			],
+			[
+				"p",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"Convert Case: Lower Case"
+			],
+			[
+				"Package",
+				"Preferences: Browse Packages"
+			],
+			[
+				"PAckage In",
+				"Package Control: Install Package"
+			],
+			[
+				"Package in",
+				"Package Control: Install Package"
+			],
+			[
+				"git",
+				"Git: Status"
+			],
+			[
+				"Pack",
+				"Preferences: Browse Packages"
+			],
+			[
+				"Insta",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"Package in	",
+				"Package Control: Install Package"
+			],
+			[
+				"package in",
+				"Package Control: Install Package"
+			],
+			[
+				"packge in",
+				"Package Control: Install Package"
+			],
+			[
+				"Package In",
+				"Package Control: Install Package"
+			],
+			[
+				"package install",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: Install Package",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 521.0
+	},
+	"console":
+	{
+		"height": 139.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/gallery-g2-g3/demo/data/gallery-compare-standalone.json",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/gallery-g2-g3/demo/gallery-compare-standalone-demo.jade",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/product/demo/data/carrying-case.json",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/product/demo/data/rx100.json",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/gallery-g2-g3/demo/data/gallery-g2-g3-cybershot.json",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/gallery-g2-g3/html/gallery-g3-accessories.jade",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/gallery-g2-g3/html/gallery-helpers.jade",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/editorial-dual-viewer-e9/css/editorial-dual-viewer-e9.scss",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/editorial-dual-viewer-e9/demo/data/full-width.json",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/editorial-dual-viewer-e9/demo/data/full-D-C-example1.json",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/editorial-chapters-e5/demo/data/layout-e5-video-chapters.json",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/editorial-chapters-e5/demo/editorial-chapters-video-b3-x00-demo.jade",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/editorial-layouts-e1a-b3-x00/demo/data/default.json",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/editorial-layouts-e1a-b3-x00/html/editorial-layouts-e1a-b3-x00.jade",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/editorial-layouts-e1a-b3-x00/demo/editorial-layouts-e1a-b3-x00-demo.jade",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/editorial-chapters-e5/js/editorial-chapters-e5.js",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/editorial-chapters-e5/demo/data/chapter-e1-full-inner-center-example1.json",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/editorial-chapters-e5/demo/editorial-chapters-e5-styles.jade",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/editorial-chapters-e5/demo/data/dummy/e5.a1.json",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/editorial-chapters-e5/html/editorial-chapters-e5.jade",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/product/demo/data/carrying-case-LCMCSVHB.json",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/gallery-g2-g3/demo/data/gallery-g3-cybershot-accessories.json",
+		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/editorial-dual-viewer-e9/css/_responsive-editorial-dual-viewer-e9.scss",
+		"/Users/KBK/Library/Application Support/minecraft/versions/ShapeShifterZ799-PreRelease/ShapeShifterZ799-PreRelease.json",
+		"/Users/KBK/Desktop/forge/eclipse/Minecraft/.classpath",
+		"/Users/KBK/Library/Application Support/minecraft/versions/ShapeShifterMod/ShapeShifterMod.json",
+		"/Applications/Minecraft.app/Contents/Info.plist",
+		"/Users/KBK/Library/Application Support/minecraft/versions/1.6.2/1.6.2.json",
+		"/Applications/MAMP/logs/php_error.log",
+		"/Users/KBK/Desktop/Copy Inventory.txt",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/data/a/jp_site_2013-07-01T20:55:00+00:00.xml",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/data/watch-data.xml",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/watch_data_06262013.xml",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/apps/frontend/i18n/en/savoir-faire.xml",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/apps/frontend/i18n/en/messages.xml",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/apps/frontend/i18n/en/boutique.xml",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/config/databases.yml",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/apps/frontend/i18n/es/messages.xml",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/Vagrantfile",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/apps/frontend/config/app.yml",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/apps/frontend/config/routing.yml",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/web/ewb-data/ewb_data_fr_uncompressed.json",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/lib/task/createWatchJsonTask.class.php",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/web/ewb-data/ewb_data_fr.json",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/web/ewb-data/ewb_data_en.json",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/web/ewb-data/ewb_data_es.json",
+		"/Users/KBK/Dropbox/Odopod/AP/sfo-audemars-piguet/website/web/ewb-data/ewb_data_cn.json",
+		"/Users/KBK/Desktop/ewb-data/ewb_data_cn.json"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages",
+			"/Users/KBK/Dropbox/Odopod/Sony Content Integration/",
+			"/Users/KBK/Dropbox/Odopod/Sony Content Integration"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"LCMCSVHB",
+			"data.meta",
+			"ghost-center",
+			"gallery-item-inner",
+			"mixin detailedGallery",
+			"detailedGallery",
+			"Carrying Case",
+			"Carry Case",
+			"500",
+			"20.2 Megapixels",
+			"topFeature",
+			"1.6.2",
+			".jar",
+			"A tribute to a faithfully preserved heritage",
+			"The equation of time function serves to indicate the discrepanc",
+			"In 1875 Jules Louis Audemars",
+			"In 1875 Jules Louis Audemars, decided to join forces with Edward Auguste Piguet",
+			"Jules Louis Audemars and Edward Au\nIn 1875 Jules Louis Audemars, decided to join forces with Edward Auguste Piguet, in order to develop and craft watches equipped with complex mechanisms. They shared a passion for watchmaking and a mastery of the art of precision that still characterizes the company to",
+			"our ambassadors",
+			"HITOS",
+			"HITOS MUNDIALES",
+			"watch-collection",
+			"watchbrow",
+			"__(\n",
+			"__(\n__(\n",
+			"extractValueFromCaliburTitle",
+			"Power Reserve",
+			"Large Date ",
+			"Large Date",
+			"Tourbillon Chronograph",
+			"(\\d+)",
+			");",
+			", ",
+			"(^.*)",
+			"(\\s)+",
+			"/%s/",
+			"/^%s/",
+			"^%s",
+			"%s",
+			"rootDir",
+			"sfConfig",
+			"sfConf",
+			"languagePicker",
+			"i18",
+			"sfConfig",
+			"setting",
+			"setti",
+			"THE OPENWORKED EXTRA-THIN ROYAL",
+			"boutique",
+			"lang",
+			"	public function executeIndex(sfWebRequest $request)\n	{\n		$this->request = $request;\n		xdebug_break();\n	    // // retrieve watch collection model \n	    // if (isset($this->values['watch_collection']) && is_numeric($this->values['watch_collection'])) {\n	    //   $this->values['obj'] = Doctrine::getTable('apCollection')->fetchOneWithTranslation($this->values['watch_collection']);\n	    // }\n	}\n",
+			"wheretobuy",
+			"WhereToBuy",
+			"wheretobuy",
+			"where",
+			"env",
+			"glob",
+			"@@svnrevision@@",
+			"minif",
+			"min",
+			"mini",
+			"minify",
+			"$model",
+			"magnifier-title",
+			"magnify-title",
+			"title",
+			"MAGNICFY",
+			"isDupe",
+			"addressMatches",
+			".internalNav-highlight",
+			".internalNav-box > a",
+			".internalNav-box",
+			".internalNav-box, .internalNav-box2",
+			"?page=maintenance",
+			"menu_pos_1=2&menu_pos_2=1&language=en",
+			"aPage",
+			"relations",
+			"relation",
+			"apStoreLocations",
+			"wheretobuy",
+			"WhereTo",
+			"Store",
+			"StoreLo",
+			"apWhereToBuy",
+			"relations",
+			"refer",
+			"ref",
+			"relations",
+			"Trans",
+			"where",
+			"whereT",
+			"Translate",
+			"list-",
+			"list-bou",
+			"continent>",
+			"continent \\/>",
+			"continent \\/\\>",
+			"continent />",
+			"continent",
+			"continentcontinent",
+			"continent",
+			"locations",
+			"$this->locations",
+			"locations",
+			"$myLoc",
+			"google",
+			"novelty-name",
+			"novelty-name ",
+			"magnifier-ti",
+			"sql",
+			"    ",
+			" "
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"\"\\1\",",
+			"),",
+			"\", \"",
+			"\"\\1\",",
+			"\"\\1\"",
+			"\"\\1\" => array(\"\");",
+			"\"\\1\""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "stickyguide.js",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"codeintel": true,
+							"codeintel_config":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2.0,
+									"codeintel_scan_files_in_project": false,
+									"javascriptExtraPaths":
+									[
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 5.0,
+									"codeintel_scan_files_in_project": false,
+									"phpExtraPaths":
+									[
+									]
+								},
+								"Python":
+								{
+									"env":
+									{
+									}
+								}
+							},
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_live": true,
+							"codeintel_live_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_max_recursive_dir_depth": 10.0,
+							"codeintel_scan_exclude_dir":
+							{
+								"JavaScript":
+								[
+									"/build/",
+									"/min/"
+								]
+							},
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+								"PyWin32",
+								"jQuery",
+								"Rails"
+							],
+							"codeintel_snippets": true,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"sublime_auto_complete": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				2,
+				1
+			],
+			[
+				0,
+				1,
+				1,
+				2
+			],
+			[
+				1,
+				1,
+				2,
+				2
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.939686369119,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			0.936237378061,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 112.0
+	},
+	"output.xdebug_execute":
+	{
+		"height": 112.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"gallery-compare-standalone",
+				"src/packages/modules/gallery-g2-g3/demo/data/gallery-compare-standalone.json"
+			],
+			[
+				"gallery-compare-standalone.jade",
+				"src/packages/modules/gallery-g2-g3/demo/gallery-compare-standalone-demo.jade"
+			],
+			[
+				"carrying-case-lcmcsvhb",
+				"src/packages/modules/product/demo/data/carrying-case-LCMCSVHB.json"
+			],
+			[
+				"gallery-g3-accessories",
+				"src/packages/modules/gallery-g2-g3/html/gallery-g3-accessories.jade"
+			],
+			[
+				"packages/modules/product/demo/data/carrying-case-lcmcsvhb.json",
+				"src/packages/modules/product/demo/data/carrying-case-LCMCSVHB.json"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 443.0,
+	"status_bar_visible": true
+}
