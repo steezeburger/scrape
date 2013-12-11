@@ -2,7 +2,7 @@ var nodeio      = require( 'node.io'    );
 var request     = require( 'request'    );
 var _           = require( 'underscore' );
 var mongoose    = require( 'mongoose'   );
-var listingModel, listingSchema, db;
+var RegionModel, RegionSchema, db;
 
 exports.job = new nodeio.Job({
     timeout: 30,
@@ -23,30 +23,18 @@ exports.job = new nodeio.Job({
             console.log( 'connection open' );
         });
 
-        // bind schema to model
-        listingSchema = mongoose.Schema({
-            type: Number,
-            name: String,
-            price: Number,
-            unit: String,
-            denotion: String,
-            createdAt: Date,
-            meta: {
-                strength: Number,
-                type: String,
-                flavor: String,
-                density: String
-            },
-            origin: {
-                businessType: String,
-                businessURL: String,
-                listingURL: String,
-                source: String
-            }
+        // bind region schema to model
+        RegionSchema = mongoose.Schema({
+            site: String,
+            state: String,
+            url: String,
+            slug: String,
+            lastUpdated: Date,
+            id: Number
         });
 
         // create data model
-        listingModel = mongoose.model( 'Listings', listingSchema );
+        RegionModel = mongoose.model( 'RegionData', RegionSchema );
 
         // gets location list of live locations
         var base                = 'https://www.stickyguide.com',
@@ -121,7 +109,7 @@ exports.job = new nodeio.Job({
                 for( var i in locationData[ state ].regions ) {
                     var chunk = locationData[ state ].regions[ i ]; // convenience
                     var that = this;
-                    var ripper = function( chunk, state, payload ) { // to capture values in the closure, since this is async
+                    var ripper = function( chunk, state, payload, i ) { // to capture values in the closure, since this is async
                         // pulse these requests
                         setTimeout( function() {
                             request( base + chunk.url, function (error, response, body) {
@@ -146,36 +134,48 @@ exports.job = new nodeio.Job({
                                     console.log( '###-###- all jobs complete?', totalPayload, totalCount );
                                     
                                     if( totalPayload == totalCount ) {
-                                        console.log( ':) yes, all jobs complete' );
-                                        that.emit( ':) yes, all jobs complete' );
-                                    }
-                                    /*var listing = new listingModel({
-                                        type: Number,
-                                        name: String,
-                                        price: Number,
-                                        unit: String,
-                                        denotion: String,
-                                        createdAt: Date,
-                                        meta: {
-                                            strength: Number,
-                                            type: String,
-                                            flavor: String,
-                                            density: String
-                                        },
-                                        origin: {
-                                            businessType: String,
-                                            businessURL: String,
-                                            listingURL: String,
-                                            source: String
-                                        }
-                                    });*/
-                                    // else bail!
+                                        var saveError = false;
+                                        // iterate through one last time and save it down
+                                        for( var _state in locationData ) {
+                                            for( var j in locationData[ _state ].regions ) {
+                                                // todo ADD VALIDATION!!!!
+                                                //      needs to check for changes
+                                                //      no dupes
+                                                //      
+                                                // add record for each region
+                                                var regionModel = new RegionModel({
+                                                    site: 'stickyguide.com',
+                                                    state: _state,
+                                                    url: locationData[ _state ].regions[ j ].url,
+                                                    slug: locationData[ _state ].regions[ j ].slug,
+                                                    id: locationData[ _state ].regions[ j ].id
+                                                });
 
+                                                regionModel.save(function( err, regionModel ){
+                                                    if( err ) {
+                                                        saveError = true;
+                                                        console.log( 'db error:', err );
+                                                    } else {
+                                                        console.log( 'document saved', regionModel );
+                                                    }
+                                                });
+                                            }
+                                        }
+
+                                        if( saveError )
+                                        {
+                                            that.error( ':( some or all records not saved' );
+                                        } else {
+                                            that.emit( ':) yes, all jobs complete' );
+                                        }
+
+                                    }
                                 }
                             });
                         }, 500);
                     }
-                    new ripper( chunk, state, payload[ state ] );
+
+                    new ripper( chunk, state, payload[ state ], i );
                 }
             }
         });
