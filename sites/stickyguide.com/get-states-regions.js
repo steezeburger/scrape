@@ -136,62 +136,54 @@ exports.job = new nodeio.Job({
                                     if( totalPayload == totalCount ) {
                                         var saveError = false;
                                         totalCount = 0;
-                                        // iterate through one last time and save it down
-                                        for( var _state in locationData ) {
-                                            for( var j in locationData[ _state ].regions ) {
+                                        // clean out records before saving new ones
+                                        var cleanup = new RegionModel();
+                                        RegionModel.remove( { site: 'stickyguide.com' }, function( err, docs ) {
+                                            if( err ) {
+                                                console.log( '###!! could not clean records ' + err  );
 
-                                                // todo ADD VALIDATION!!!!
-                                                //      needs to check for changes
-                                                //      no dupes
-                                                //
-                                                var chunk = locationData[ _state ].regions[ j ]; // phew
-                                                
+                                            } else {
+                                                console.log( '###@@ removed stale recrds' );
+                                                // iterate through one last time and save it down
+                                                for( var _state in locationData ) {
+                                                    for( var j in locationData[ _state ].regions ) {
 
-                                                // add record for each region
-                                                var regionModel = new RegionModel({
-                                                    site:   'stickyguide.com',
-                                                    name:   chunk.name,
-                                                    state:  _state,
-                                                    url:    chunk.url,
-                                                    slug:   chunk.slug,
-                                                    id:     chunk.id
-                                                });
+                                                        // todo ADD VALIDATION!!!!
+                                                        //      needs to check for changes
+                                                        //      no dupes
+                                                        //
+                                                        var chunk = locationData[ _state ].regions[ j ]; // phew
+                                                        
 
+                                                        // add record for each region
+                                                        var dataPiece = {
+                                                            site:   'stickyguide.com',
+                                                            name:   chunk.name,
+                                                            state:  _state,
+                                                            url:    chunk.url,
+                                                            slug:   chunk.slug,
+                                                            id:     chunk.id
+                                                        };
+                                                        var regionModel = new RegionModel( dataPiece );
 
-                                                RegionModel.find( { site: 'stickyguide.com' }, function( err, docs ) {
-                                                    if( err ) {
-                                                        console.log( '###!! error ' + err  );
-
-                                                    } else {
-                                                        console.log( '###@@ success' );
-
-                                                        if( 0 === docs.length ) {
-                                                            // not found, write new entry
-
-                                                        } else {
-                                                            // update entry
+                                                        // save model
+                                                        regionModel.save(function( err, regionModel ){
+                                                            if( err ) {
+                                                                saveError = true;
+                                                                console.log( 'db error:', err );
+                                                            } else {
+                                                                console.log( 'document saved' );
+                                                            }
                                                             
-                                                        }
-
-                                                        totalCount++;
-                                                        if( totalCount === totalPayload ) {
-                                                            that.emit( 'complete' );
-                                                        }
+                                                            totalCount++;
+                                                            if( totalCount === totalPayload ) {
+                                                                that.emit( 'complete' );
+                                                            }
+                                                        });
                                                     }
-                                                });
-
-
-                                                // save model
-                                                /*regionModel.save(function( err, regionModel ){
-                                                    if( err ) {
-                                                        saveError = true;
-                                                        console.log( 'db error:', err );
-                                                    } else {
-                                                        console.log( 'document saved' );
-                                                    }
-                                                });*/
+                                                }
                                             }
-                                        }
+                                        });
                                     }
                                 }
                             });
