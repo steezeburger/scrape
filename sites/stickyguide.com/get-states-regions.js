@@ -114,7 +114,7 @@ exports.job = new nodeio.Job({
                         setTimeout( function() {
                             request( base + chunk.url, function (error, response, body) {
                                 
-                                console.log( '#-REQUEST COMPLETE-#' );
+                                console.log( '###- request complete' );
                                 console.log( state );
                                 console.log( response.request.uri.pathname );
                                 console.log( '###- response' );
@@ -135,40 +135,63 @@ exports.job = new nodeio.Job({
                                     
                                     if( totalPayload == totalCount ) {
                                         var saveError = false;
+                                        totalCount = 0;
                                         // iterate through one last time and save it down
                                         for( var _state in locationData ) {
                                             for( var j in locationData[ _state ].regions ) {
+
                                                 // todo ADD VALIDATION!!!!
                                                 //      needs to check for changes
                                                 //      no dupes
-                                                //      
+                                                //
+                                                var chunk = locationData[ _state ].regions[ j ]; // phew
+                                                
+
                                                 // add record for each region
                                                 var regionModel = new RegionModel({
-                                                    site: 'stickyguide.com',
-                                                    state: _state,
-                                                    url: locationData[ _state ].regions[ j ].url,
-                                                    slug: locationData[ _state ].regions[ j ].slug,
-                                                    id: locationData[ _state ].regions[ j ].id
+                                                    site:   'stickyguide.com',
+                                                    name:   chunk.name,
+                                                    state:  _state,
+                                                    url:    chunk.url,
+                                                    slug:   chunk.slug,
+                                                    id:     chunk.id
                                                 });
 
-                                                regionModel.save(function( err, regionModel ){
+
+                                                RegionModel.find( { site: 'stickyguide.com' }, function( err, docs ) {
+                                                    if( err ) {
+                                                        console.log( '###!! error ' + err  );
+
+                                                    } else {
+                                                        console.log( '###@@ success' );
+
+                                                        if( 0 === docs.length ) {
+                                                            // not found, write new entry
+
+                                                        } else {
+                                                            // update entry
+                                                            
+                                                        }
+
+                                                        totalCount++;
+                                                        if( totalCount === totalPayload ) {
+                                                            that.emit( 'complete' );
+                                                        }
+                                                    }
+                                                });
+
+
+                                                // save model
+                                                /*regionModel.save(function( err, regionModel ){
                                                     if( err ) {
                                                         saveError = true;
                                                         console.log( 'db error:', err );
                                                     } else {
-                                                        console.log( 'document saved', regionModel );
+                                                        console.log( 'document saved' );
                                                     }
-                                                });
+                                                });*/
                                             }
                                         }
-
-                                        if( saveError )
-                                        {
-                                            that.error( ':( some or all records not saved' );
-                                        } else {
-                                            that.emit( ':) yes, all jobs complete' );
-                                        }
-
                                     }
                                 }
                             });
