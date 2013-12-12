@@ -11,8 +11,10 @@ var RegionModel,
     DispensarySchema,
     DispensaryModel,
     db, 
-    payload = 0,
-    count   = 0;
+    globalPayload   = 0,
+    globalPageCount = 0,
+    payload         = [],
+    count           = [];
 
 exports.job = new nodeio.Job({
     timeout: 120,
@@ -40,25 +42,39 @@ exports.job = new nodeio.Job({
             SubregionSchema     = mongoose.Schema( schemas.get( 'subregion' ) );
             DispensarySchema    = mongoose.Schema( schemas.get( 'dispensary' ) );
 
-
             RegionModel         = mongoose.model( 'RegionData', RegionSchema );
             SubregionModel      = mongoose.model( 'SubregionData', SubregionSchema );
             DispensaryModel     = mongoose.model( 'DispensaryData', DispensarySchema );
             
+            // try to find records in database to update
             RegionModel.find( { site: 'stickyguide.com' }, function( err, docs ) {
                 console.log( 'records results' );
                 if( err ) {
                     console.log( '###!! could not select records ' + err  );
                 } else {
                     console.log( 'received records, processing' );
+                    
+                    // store overal page payload to be tracked
+                    globalPayload = docs.length;
+
+                    // iterate through records to update dispensary data
                     for( var i in docs ) {
+                        
                         var page = urlScheme( docs[ i ].slug );
                         console.log( 'fetching page: ' + page );
                         that.getHtml( page, function( err, $ ) {
                             var collection = $( '#dispensaries-list .dispensaries li' );
+                            // there is a subregion to crawl
                             if( collection ) {
-                                // there is a subregion to crawl
+                                
                                 console.log( 'list construct found' );
+                                
+                                // add to overall count 
+                                if( !payload[ docs[ i ].slug ] ) {
+                                    payload[ docs[ i ].slug ] = collection.length;
+                                }
+
+                                // iterate over all nodes to grab data
                                 collection.each( function( node ) {
                                     var info            = $( '.details .alt a', node ),
                                         address_node    = $( '.details .location', node ),
@@ -98,7 +114,17 @@ exports.job = new nodeio.Job({
                                         { upsert: true }, // create new doc if not found
                                         function( err, updatedCount ) {
                                             // uptick payload
-                                            console.log( 'document written' );
+                                            count[ docs[ i ].slug ]++;  // <----- !!!!!!!!NEED TO DO THIS IN A CLOSURE!!!!!!! 
+                                            console.log( 'document written, checking for end condition', count, payload );
+
+                                            // check for end condition
+                                            if( count[ docs[ i ].slug ] === payload[ docs[ i ].slug ] ) {
+                                                console.log( 'dispensary list for page ' + docs[ i ].slug + 'collected and stored' );
+                                                globalPageCount++;
+                                                if( globalPayload === globalPageCount ) {
+                                                    that.emit( 'process complete' );
+                                                }
+                                            }
                                         }
                                     );
 
