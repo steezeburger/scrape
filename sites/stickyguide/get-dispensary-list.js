@@ -26,7 +26,7 @@ var DispensaryController,
 
 DispensaryController = function() {
     var self = this;
-    console.log( 'Dispensary Scraper Loaded' );
+    console.log( '@ Dispensary Scraper Loaded' );
 };
 
 DispensaryController.prototype = {
@@ -34,112 +34,131 @@ DispensaryController.prototype = {
     callbacks: [],
     init: function() {
         var self = this;
-        console.log( 'Dispensary Controller: init' );
+        console.log( '@ Dispensary Controller: init' );
         self.getSchemas().getModels().connect();
+        return self;
     },
     start: function() {
         var self = this;
         self.scrape();
+        return self;
     },
     scrape: function() {
         var self = this;
         self.getRecords();
-
-        //self.endProcess();
+        return self;
     },
     getRecords: function() {
         var self = this;
         RegionModel.find( { site: 'stickyguide.com' }, function( err, docs ) {
-            console.log( 'records results' );
+            console.log( '@ records results' );
             if( err ) {
-                console.log( '###!! could not select records ' + err  );
+                console.log( '@ERROR could not select records ', err  );
+                self.dispatch( DISPENSARY_CONTROLLER_ERROR );
+                return false;
             } else {
                 self.processRecords( docs );
             }
         });
+        return self;
+    },
+    saveResult: function() {
+        DispensaryModel.update(
+            { title: title, location: location }, // criteria
+            { 
+                url: url,
+                title: title,
+                address: address,
+                location: location,
+                lastUpdated: new Date( lastUpdated )
+            }, // new data
+            { upsert: true }, // create new doc if not found
+            function( err, updatedCount ) {
+                // uptick payload
+                count[ docs[ i ].slug ]++;  // <----- !!!!!!!!NEED TO DO THIS IN A CLOSURE!!!!!!! 
+                console.log( 'document written, checking for end condition', count, payload );
+
+                // check for end condition
+                if( count[ docs[ i ].slug ] === payload[ docs[ i ].slug ] ) {
+                    console.log( 'dispensary list for page ' + docs[ i ].slug + 'collected and stored' );
+                    globalPageCount++;
+                    if( globalPayload === globalPageCount ) {
+                        that.emit( 'process complete' );
+                    }
+                }
+            }
+        );
+        return self;
+    },
+    processPage: function( page ) {
+        var self = this;
+        console.log( '@ fetching page: ' + page );
+        that.getHtml( page, function( err, $ ) {
+            // starting point
+            var collection = $( '#dispensaries-list .dispensaries li' );
+
+            // there is a subregion to crawl
+            if( collection ) {
+                
+                console.log( '@ list node found' );
+                
+                // add to overall count 
+                if( !payload[ docs[ i ].slug ] ) {
+                    payload[ docs[ i ].slug ] = collection.length;
+                }
+
+                // iterate over all nodes to grab data
+                collection.each( function( node ) {
+                    var info            = $( '.details .alt a', node ),
+                        address_node    = $( '.details .location', node ),
+                        meta            = $( '.details .text strong', node ),
+                        location_node   = $( '.details .neighborhood strong', node ),
+                        url,
+                        address,
+                        title,
+                        location,
+                        lastUpdated,
+                        meta;
+
+                    // get dispensary meta data
+                    url         = info.attribs.href;
+                    title       = info.children[ 0 ].raw;
+                    address     = address_node.children[ 0 ].raw;
+                    location    = location_node.raw;
+                    lastUpdated = meta[ meta.length - 1 ].children[ 0 ].raw;
+                    
+                    self.saveResult( 
+                        url,
+                        title,
+                        address,
+                        location,
+                        lastUpdated
+                    );
+
+                });
+            } else {
+                // there are no subregions to crawl
+                console.log( '@ERROR list construct not found, need to take other actions' );
+                self.dispatch( DISPENSARY_CONTROLLER_ERROR );
+                return false;
+            }
+        });
+        return self;
     },
     processRecords: function( docs ) {
         var self = this;
+        // make this as atomic as possible
         if( undefined === docs ) {
+            // there needs to be some urls, or something went wrong
             self.dispatch( DISPENSARY_CONTROLLER_ERROR );
+            return;
         }
         for( var i in docs ) {
+            // concat url to request
+            var page = self.urlScheme( docs[ i ].slug );
             
-            var page = urlScheme( docs[ i ].slug );
-            console.log( 'fetching page: ' + page );
-            that.getHtml( page, function( err, $ ) {
-                var collection = $( '#dispensaries-list .dispensaries li' );
-                // there is a subregion to crawl
-                if( collection ) {
-                    
-                    console.log( 'list construct found' );
-                    
-                    // add to overall count 
-                    if( !payload[ docs[ i ].slug ] ) {
-                        payload[ docs[ i ].slug ] = collection.length;
-                    }
-
-                    // iterate over all nodes to grab data
-                    collection.each( function( node ) {
-                        var info            = $( '.details .alt a', node ),
-                            address_node    = $( '.details .location', node ),
-                            meta            = $( '.details .text strong', node ),
-                            location_node   = $( '.details .neighborhood strong', node ),
-                            url,
-                            address,
-                            title,
-                            location,
-                            lastUpdated,
-                            meta;
-
-                        // get dispensary url
-                        url         = info.attribs.href;
-
-                        // get dispensary title
-                        title       = info.children[ 0 ].raw;
-
-                        // dispensary address
-                        address     = address_node.children[ 0 ].raw;
-
-                        // dispensary location
-                        location    = location_node.raw;
-
-                        // get dispensary meta
-                        lastUpdated = meta[ meta.length - 1 ].children[ 0 ].raw;
-                        
-                        DispensaryModel.update(
-                            { title: title, location: location }, // criteria
-                            { 
-                                url: url,
-                                title: title,
-                                address: address,
-                                location: location,
-                                lastUpdated: new Date( lastUpdated )
-                            }, // new data
-                            { upsert: true }, // create new doc if not found
-                            function( err, updatedCount ) {
-                                // uptick payload
-                                count[ docs[ i ].slug ]++;  // <----- !!!!!!!!NEED TO DO THIS IN A CLOSURE!!!!!!! 
-                                console.log( 'document written, checking for end condition', count, payload );
-
-                                // check for end condition
-                                if( count[ docs[ i ].slug ] === payload[ docs[ i ].slug ] ) {
-                                    console.log( 'dispensary list for page ' + docs[ i ].slug + 'collected and stored' );
-                                    globalPageCount++;
-                                    if( globalPayload === globalPageCount ) {
-                                        that.emit( 'process complete' );
-                                    }
-                                }
-                            }
-                        );
-
-                    });
-                } else {
-                    // there are no subregions to crawl
-                    console.log( 'list construct not found, need to take other actions' );
-
-                }
-            });
+            // fetching page
+            self.processPage( page );
         }
     },
     getSchemas: function() {
@@ -155,9 +174,6 @@ DispensaryController.prototype = {
         SubregionModel      = mongoose.model( 'SubregionData', SubregionSchema );
         DispensaryModel     = mongoose.model( 'DispensaryData', DispensarySchema );
         return self;
-    },
-    getRegions : function() {
-        var self = this;
     },
     endProcess: function() {
         var self = this;
@@ -197,9 +213,9 @@ DispensaryController.prototype = {
 
 // RUNNER
 exports.job = new nodeio.Job({
-    timeout: 120,
-    retries: 3,
-    max: 120
+    timeout: 120,   // process life max
+    retries: 3,     //
+    max: 120        // threads max
 },
 {
     input: false,
