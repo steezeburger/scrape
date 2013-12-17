@@ -177,13 +177,12 @@ DispensaryController.prototype = {
                     collection = $( '#dispensaries-list .dispensaries li' );
             
             if( collection ) {
-                
+                var  z = 0;
                 collection.each( function( node ) {
 
                     var info            = $( '.details .alt a', node ),
                         address_node    = $( '.details .location', node ),
                         meta            = $( '.details .text strong', node ),
-                        location_node   = $( '.details .neighborhood strong', node ),
                         url,
                         address,
                         title,
@@ -191,15 +190,14 @@ DispensaryController.prototype = {
                         lastUpdated,
                         meta;
 
+                       z++;
+
                     // TODO: Validation: get dispensary meta data
                     url         = ( Validator.assert( 
                                         Validator.constants.IS_NOT_EMPTY, 
                                         info.attribs.href )) ? info.attribs.href : '';
                     title       = info.children[ 0 ].raw;
                     address     = address_node.children[ 0 ].raw;
-                    location    = ( Validator.assert( 
-                                        Validator.constants.IS_NOT_EMPTY, 
-                                        location_node.raw )) ? location_node.raw : '';
                     lastUpdated = meta[ meta.length - 1 ].children[ 0 ].raw;
 
                     document = {
@@ -209,6 +207,7 @@ DispensaryController.prototype = {
                         location:location,
                         lastUpdated:lastUpdated
                     };
+
                     DispensaryModel.update(
                     { 
                         title: document.title, 
@@ -221,7 +220,7 @@ DispensaryController.prototype = {
                         location: document.location,
                         lastUpdated: new Date( document.lastUpdated )
                     }, // new data
-                    { 
+                    {
                         upsert: true
                     }, // create new doc if not found
                     function( err, updatedCount ) {
@@ -230,10 +229,17 @@ DispensaryController.prototype = {
                             // if a record wasn't written, deduct from the expected total by one
                             self.payloadTick( 'dispensaries', -1 );
                         } else {
+                            if( updatedCount < 1  ) {
+                                l( '@ERROR could not save record' );
+                            }
+
                             self.payloadItemTick( 'dispensaries', 1 );
-                            l('record saved', self.payload);
                             if( self.payloadMet( 'dispensaries' ) ) {
-                                self.endProcess( '@@ process complete' );
+                                l( '@ expecting to find ', self.getPayload( 'dispensaries' ) );
+                                DispensaryModel.find( { site: "stickyguide.com" }, function( err, docs ) {
+                                    console.log( docs.lenth + ' in mongo', err );
+                                    self.endProcess( '@@ process complete' );
+                                });
                             }
                         }
                     });

@@ -25,9 +25,25 @@ exports.get = function( which ) {
 				url: String,
 				title: String,
 				address: String,
-				location: String,
 				lastUpdated: String
 			}
+		break;
+		case 'price':
+		schema = {
+			strain: String,
+			prices: [
+				{ 
+					unit: String,
+					price: Number,
+					denotion: String
+				}
+			],
+			meta: {
+				source: String,
+				ur: String
+			},
+			createdAt: Date
+		}
 		break;
 	}
 	return schema;
