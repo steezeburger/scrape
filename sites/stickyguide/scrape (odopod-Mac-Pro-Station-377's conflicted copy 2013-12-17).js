@@ -1,12 +1,12 @@
 // REQUIRE
-var nodeio      = require( 'node.io'            ),
-    request     = require( 'request'            ),
-    _           = require( 'underscore'         ),
-    mongoose    = require( 'mongoose'           ),
-    site        = require( './schema/site'      ),
-    schemas     = require( './schema/regions'   ),
-    payloadManager  = require( '../../lib/com/ganjazoid/PayloadManager' ),
-    validator       = require( '../../lib/com/ganjazoid/ValidatorBase'  );
+var nodeio      = require( 'node.io'    ),
+    request     = require( 'request'    ),
+    _           = require( 'underscore' ),
+    mongoose    = require( 'mongoose'   ),
+    site        = require( './schema/site' ),
+    schemas     = require( './schema/regions' ),
+    payloadManager = require( '../../lib/com/ganjazoid/PayloadManager' ),
+    validator   = require( '../../lib/com/ganjazoid/ValidatorBase' );
 
 // CONST
 var SCRAPER_CONTROLLER_COMPLETE  = 'dispensary.list.complete',
@@ -93,55 +93,20 @@ ScrapeController.prototype = {
         var self = this;
         DispensaryModel.find({}).count(function( err, result ) {
             if( result === 0 ) {
-                self.endProcess( 'no documents found, cannot procceed' );
-                return;
-            } else {
-                //limit = result;
-                limit = 1;
-                self.getListing();
+                self.endProcess();
             }
         });
     },
 
     getListing: function() {
         var self = this;
-        console.log( 'payload', cur, limit );
-        if( cur < limit ) { // still processing to be done
-            // this is a recursive call that will keep going until finished. This is a blocking IO technique
-            // because we don't want to hammer the shit out of the slow sites at first. We can open up on them 
-            // later. As long as it's scraped at night, once a day, I think thats adequate for now
-            DispensaryModel.find({}, null, { skip: cur }).limit(1).exec(function( err, doc ) {
-                var url =  "https://www.stickyguide.com/dispensaries/natural-herbal-pain-relief/menu.html?type_name=Flowers"; // self.formatURL( doc[0].url );
-
-                if( err ) {
-                    console.log( err );
-                }
-                console.log( 'fetching: ', url );
-                // try to get the menu
-                scope.getHtml( url, function( err, $ ) {
-                    var menuRows,
-                        documentCollection,
-                        items = [];
-
-                    try {
-                        menuRows = $( '.flower-details' );
-                        for(var i = 0; i < menuRows.length; i++) {
-                            console.log( 'found flower power ' + i );
-                        }
-                        // tick up payload
-                    } catch( e ) {
-                        console.log( 'no menu for dispensary' );
-                        limit--;
-                    }
-                    cur++;
-                    self.getListing();
-                    //self.endProcess( 'lets just do 1' );
-                });
-            });
-        } else {
-            self.endProcess( 'parsing complete' );
-        }
-
+        DispensaryModel.find({}, null, { skip: cur }).limit(1).exec(function( err, doc ) {
+            if( err ) {
+                console.log( err );
+            }
+            console.log( self.formatURL( doc[0].url ) );    
+            cur++
+        });
     },
 
     /* UTILS */
@@ -152,7 +117,7 @@ ScrapeController.prototype = {
 
     endProcess: function() {
         var self = this;
-        self.dispatch( SCRAPER_CONTROLLER_COMPLETE );
+        self.dispatch( DISPENSARY_CONTROLLER_COMPLETE );
     },
 
     listen: function( event, callback ) {
@@ -164,14 +129,10 @@ ScrapeController.prototype = {
         var self = this;
         for( var i in self.callbacks ) {
             if( event === self.callbacks[ i ].event ) {
-                var message = {};
-                if( extra ) {
-                    message = {
-                        message: extra.message,
-                        data: extra.data
-                    }
-                }
-                self.callbacks[ i ].callback( message );
+                self.callbacks[ i ].callback({
+                    message: extra.message,
+                    data: extra.data
+                });
             }
         }
     }

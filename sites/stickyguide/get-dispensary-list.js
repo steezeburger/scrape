@@ -143,8 +143,8 @@ DispensaryController.prototype = {
 
     getModels: function() {
         var self = this;
-        RegionModel         = mongoose.model( 'RegionData', RegionSchema );
-        SubregionModel      = mongoose.model( 'SubregionData', SubregionSchema );
+        RegionModel         = mongoose.model( 'RegionData',     RegionSchema );
+        SubregionModel      = mongoose.model( 'SubregionData',  SubregionSchema );
         DispensaryModel     = mongoose.model( 'DispensaryData', DispensarySchema );
         return self;
     },

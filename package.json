@@ -1,0 +1,41 @@
+{
+	"name": "ganjazoid",
+	"preferGlobal": "false",
+	"author": "Brian Kenny <papaviking@gmail.com>",
+	"description": "",
+	"contributors": [
+		{
+			"name": "Brian Kenny",
+			"email": "papaviking@gmail.com"
+		}
+	],
+	"scripts": {
+		"start": "",
+		"test": "",
+		"predeploy": "echo This will be run before deploying the app",
+		"postdeploy": "echo This will be run after deploying the app"
+	},
+	"main": "",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/papaviking/scrape.git"
+	},
+	"keywords": [],
+	"dependencies": {
+		"backbone" 	: "1.1.x",
+		"coffee"	: "0.0.x",
+		"mime"		: "1.2.x",
+		"mongoose"	: "3.8.x",
+		"node.io"	: "0.5.x",
+		"request"	: "2.9.x",
+		"require"	: "0.5.x",
+		"sigmund"	: "1.0.x",
+		"underscore": "1.5.2",
+		"validator" : "2.0.x"
+	},
+	"license": "MIT",
+	"engines": {
+		"node": ">0.10.21"
+	}
+
+}
