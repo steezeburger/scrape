@@ -33,15 +33,17 @@ exports.get = function( which ) {
 			strain: String,
 			prices: [
 				{ 
-					unit: String,
 					price: Number,
+					unit: String,
 					denotion: String
 				}
 			],
-			meta: {
-				source: String,
-				ur: String
-			},
+			meta: [
+				{
+					key: String,
+					value: String
+				}
+			],
 			createdAt: Date
 		}
 		break;

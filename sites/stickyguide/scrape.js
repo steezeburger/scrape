@@ -1,10 +1,12 @@
-// REQUIRE
+    // DEPENDENCIES
 var nodeio      = require( 'node.io'            ),
     request     = require( 'request'            ),
     _           = require( 'underscore'         ),
     mongoose    = require( 'mongoose'           ),
     site        = require( './schema/site'      ),
     schemas     = require( './schema/regions'   ),
+    helpers     = require( '../../lib/com/ganjazoid/Helpers'),
+    config      = require( '../../app/configs' ),
     payloadManager  = require( '../../lib/com/ganjazoid/PayloadManager' ),
     validator       = require( '../../lib/com/ganjazoid/ValidatorBase'  );
 
@@ -60,7 +62,7 @@ ScrapeController.prototype = {
 
     connect : function() {
         var self = this;
-        mongoose.connect('mongodb://localhost/ganjazoid');
+        mongoose.connect( config.setting( 'databaseURL' ) );
         db = mongoose.connection;
         db.on( 'error', function() {
             console.log( 'connection error' );
@@ -121,17 +123,19 @@ ScrapeController.prototype = {
                 scope.getHtml( url, function( err, $ ) {
                     var menuRows,
                         documentCollection,
+                        hasRows = false,
                         items = [];
 
                     try {
-                        menuRows = $( '.flower-details' );
-                        for(var i = 0; i < menuRows.length; i++) {
-                            console.log( 'found flower power ' + i );
-                        }
+                        menuRows    = $( '.flower-snippet .flower-details' );
+                        hasRows     = true;
                         // tick up payload
                     } catch( e ) {
                         console.log( 'no menu for dispensary' );
                         limit--;
+                    }
+                    if( hasRows ) {
+                        self.processListing( menuRows, $ );
                     }
                     cur++;
                     self.getListing();
@@ -141,6 +145,53 @@ ScrapeController.prototype = {
         } else {
             self.endProcess( 'parsing complete' );
         }
+
+    },
+
+    processListing: function( menuRows, $ ) {
+        if( undefined === menuRows ) {
+            return false;
+        }
+        for( var i = 0; i < menuRows.length; i++ ) {
+            console.log( 'processing column ' + i );
+
+            // get nodes
+            var nodeGroup = {},
+                data      = {};
+            nodeGroup.titleNode = $( 'h5 a',   menuRows[ i ] );
+            nodeGroup.stats     = $( '.stats .stat', menuRows[ i ] );
+            
+            // parse data
+            data.title  = nodeGroup.titleNode.children[ 0 ].raw;
+            data.url    = nodeGroup.titleNode.attribs.href;
+            data.meta   = [],
+            data.prices = [];
+
+            for( var z = 0; z < nodeGroup.stats.length; z++ ) {
+                var value = nodeGroup.stats[ z ].children[ 0 ].children[ 0 ],
+                    key   = nodeGroup.stats[ z ].children[ 1 ].children[ 0 ];
+                // this is the price section
+                if( value.raw.indexOf( 'span class' ) > -1 ) {
+                    var prices = {};
+                    prices.currency = ( value.children[ 0 ].raw === "$" )  ? 'US' : value.children[ 0 ].raw;
+                    prices.unit = helpers.trim( nodeGroup.stats[ z ].children[ 1 ].children[ 0 ].raw );
+                    prices.price = helpers.trim( nodeGroup.stats[ z ].children[ 0 ].children[ 1 ].raw );
+                    data.prices.push( prices );
+                // this is the meta data section
+                } else {
+                    data.meta.push({
+                        key:    helpers.trim( key.raw ),
+                        value:  helpers.trim( value.raw )
+                    });
+
+                }
+            }
+            console.log( data );
+        }
+        return true;
+    },
+
+    saveBatch: function() {
 
     },
 
