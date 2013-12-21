@@ -29,23 +29,24 @@ exports.get = function( which ) {
 			}
 		break;
 		case 'price':
-		schema = {
-			strain: String,
-			prices: [
-				{ 
-					price: Number,
-					unit: String,
-					denotion: String
-				}
-			],
-			meta: [
-				{
-					key: String,
-					value: String
-				}
-			],
-			createdAt: Date
-		}
+			schema = {
+				title: String,
+				type: String,
+				prices: [
+					{ 
+						price: Number,
+						unit: String,
+						denotion: String
+					}
+				],
+				meta: [
+					{
+						key: String,
+						value: String
+					}
+				],
+				createdAt: Date
+			}
 		break;
 	}
 	return schema;

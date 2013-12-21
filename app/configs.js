@@ -1,6 +1,12 @@
 var configuration = function() {};
 configuration.prototype = {
+	stickyguide: 'https://www.stickyguide.com',
 	databaseURL: 'mongodb://localhost/ganjazoid',
+
+
+
+
+
 
 	set: function( key, value ) {
 		this[ key ] = value;
