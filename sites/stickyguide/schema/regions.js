@@ -25,7 +25,17 @@ exports.get = function( which ) {
 				url: String,
 				title: String,
 				address: String,
+				/*usingMenu: Boolean,*/
 				lastUpdated: String
+			}
+		break;
+		case 'hotlist':
+			schema = {
+                address: String,
+                lastUpdated: Date,
+                location: String,
+                title: String,
+                url: String
 			}
 		break;
 		case 'price':
