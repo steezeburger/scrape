@@ -210,7 +210,7 @@ ScrapeController.prototype = {
                 } catch( e ) {
                     summary.errors++;
                     console.log( 'no menu for dispensary' );
-                    limit--;
+                    //limit--;
                 }
 
                 // we have a menu
@@ -249,8 +249,10 @@ ScrapeController.prototype = {
             });
         } else {
             summary.time_elapsed = new Date();
-            l( '@ Processing Summary @', summary );
+            l( '@ Processing Summary @'.green.underline );
             self.saveHotlist( summary.sources );
+            delete summary.sources;
+            l( summary );
         }
     },
 
