@@ -258,7 +258,7 @@ ScrapeController.prototype = {
 
 
 
-    processListing: function( menuRows, $, listingType ) {
+   processListing: function( menuRows, $, listingType ) {
         var self = this;
         if( undefined === menuRows ) {
             return false;
@@ -310,7 +310,7 @@ ScrapeController.prototype = {
             break;
         }
         return true;
-    },
+    }, 
 
     saveHotlist: function( list ) {
         var self = this;

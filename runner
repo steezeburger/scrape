@@ -1,1 +1,3 @@
-node.io stickyguide
+node.io --debug sites/stickyguide/get-state-list
+node.io --debug sites/stickyguide/get-dispensary-list
+node.io --debug sites/stickyguide/update-hotlist

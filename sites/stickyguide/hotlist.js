@@ -1,308 +1,210 @@
-   [ { dispensaries: 
-        { _id: 52ad2cbbebb82088350c06ad,
-          address: '\n711 Charcot Avenue\nSan Jose,\nCA\n95131\n',
-          lastUpdated: 'Sun Dec 15 2013 00:00:00 GMT-0800 (PST)',
-          location: 'San Jose',
-          title: 'Elemental Wellness',
-          url: '/dispensaries/elemental-wellness' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0255,
-          address: '\n1236 C St.\nSacramento,\nCA\n95814\n',
-          lastUpdated: 'Sun Dec 15 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Northstar Holistic Collective',
-          url: '/dispensaries/northstar-holistic-collective' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0272,
-          address: '\n2366 San Pablo Ave.\nBerkeley,\nCA\n94702\n',
-          lastUpdated: 'Sun Dec 15 2013 00:00:00 GMT-0800 (PST)',
-          location: '',
-          title: 'Berkeley Patients Group',
-          url: '/dispensaries/berkeley-patients-group' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0273,
-          address: '\n2142 The Alameda \nSan Jose,\nCA\n95126\n',
-          lastUpdated: 'Sun Dec 15 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Amsterdam\'s Garden',
-          url: '/dispensaries/amsterdams-garden' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0274,
-          address: '\n711 Charcot Avenue\nSan Jose,\nCA\n95131\n',
-          lastUpdated: 'Sun Dec 15 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Elemental Wellness',
-          url: '/dispensaries/elemental-wellness' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0275,
-          address: '\n2106 Ringwood Ave.\nSan Jose,\nCA\n95131\n',
-          lastUpdated: 'Sun Dec 15 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Harborside Health Center - San Jose',
-          url: '/dispensaries/harborside-health-center-san-jose' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0276,
-          address: '\n1326 Grove Street\nSan Francisco,\nCA\n94117\n',
-          lastUpdated: 'Sun Dec 15 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'BASA Collective',
-          url: '/dispensaries/basa-collective' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0277,
-          address: '\n1670 Zanker Road\nUnit A\nSan Jose,\nCA\n95112\n',
-          lastUpdated: 'Sat Dec 14 2013 00:00:00 GMT-0800 (PST)',
-          location: '',
-          title: 'Palliative',
-          url: '/dispensaries/palliative' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0278,
-          address: '\n2095 Market Street\nSan Francisco,\nCA\n94114\n',
-          lastUpdated: 'Fri Dec 13 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'The Apothecarium',
-          url: '/dispensaries/the-apothecarium' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0279,
-          address: '\n471 Jessie St.\nSan Francisco,\nCA\n94103\n',
-          lastUpdated: 'Fri Dec 13 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Bloom Room',
-          url: '/dispensaries/bloom-room' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c027a,
-          address: '\n991 Saratoga Ave.\n#140\nSan Jose,\nCA\n95129\n',
-          lastUpdated: 'Fri Dec 13 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'South Bay Healing Center',
-          url: '/dispensaries/south-bay-healing-center' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c027b,
-          address: '\n52 South First St.\nSuite #220\nSan Jose,\nCA\n95113\n',
-          lastUpdated: 'Thu Dec 12 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'San Jose Medicinal ',
-          url: '/dispensaries/san-jose-medicinal' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c027c,
-          address: '\n3591 Charter Park Dr.\nSan Jose,\nCA\n95136\n',
-          lastUpdated: 'Wed Dec 11 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Canna Culture Collective',
-          url: '/dispensaries/canna-culture-collective' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c027d,
-          address: '\n847 Commercial Street\nSan Jose,\nCA\n95112\n',
-          lastUpdated: 'Wed Dec 11 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Leaf Lab',
-          url: '/dispensaries/leaf-lab' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c027e,
-          address: '\n2441 Mission St.\nSan Francisco,\nCA\n94110\n',
-          lastUpdated: 'Wed Dec 11 2013 00:00:00 GMT-0800 (PST)',
-          location: '',
-          title: 'Shambhala Healing Center',
-          url: '/dispensaries/shambhala-healing-center' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c027f,
-          address: '\n1256 Mission St.\nSan Francisco,\nCA\n94103\n',
-          lastUpdated: 'Mon Dec 09 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'SPARC',
-          url: '/dispensaries/sparc' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0280,
-          address: '\n4140 Stevens Creek Blvd.\nSan Jose,\nCA\n95129\n',
-          lastUpdated: 'Fri Dec 06 2013 00:00:00 GMT-0800 (PST)',
-          location: '',
-          title: 'Buddy\'s Cannabis Patient Collective',
-          url: '/dispensaries/buddys-cannabis-patient-collective' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0281,
-          address: '\n1926 O\'Toole Way\nSan Jose,\nCA\n95131\n',
-          lastUpdated: 'Mon Dec 02 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Nirvana Wellness Center',
-          url: '/dispensaries/nirvana-wellness-center' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0282,
-          address: '\n246 East Gish Rd.\nSan Jose,\nCA\n95112\n',
-          lastUpdated: 'Tue Nov 26 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Silicon Valley ARC',
-          url: '/dispensaries/silicon-valley-arc' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0283,
-          address: '\n90 E. Gish Rd.\n#250, 2nd floor\nSan Jose,\nCA\n95112\n',
-          lastUpdated: 'Wed Nov 13 2013 00:00:00 GMT-0800 (PST)',
-          location: '',
-          title: 'Pyramid Medicinal',
-          url: '/dispensaries/pyramid-medicinal' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0284,
-          address: '\n519 Parrott St.\nSan Jose,\nCA\n95112\n',
-          lastUpdated: 'Thu Oct 24 2013 00:00:00 GMT-0700 (PDT)',
-          location: 'strong',
-          title: 'Natural Herbal Pain Relief',
-          url: '/dispensaries/natural-herbal-pain-relief' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0286,
-          address: '\n1621 Almaden Road\nSan Jose,\nCA\n95125\n',
-          lastUpdated: 'Thu Oct 17 2013 00:00:00 GMT-0700 (PDT)',
-          location: 'strong',
-          title: 'Revolution Health Center - San Jose',
-          url: '/dispensaries/revolution-health-center-san-jose' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0287,
-          address: '\n1840 Embarcadero\nOakland,\nCA\n94606\n',
-          lastUpdated: 'Tue Jul 23 2013 00:00:00 GMT-0700 (PDT)',
-          location: '',
-          title: 'Harborside Health Center - Oakland',
-          url: '/dispensaries/harborside-health-center-oakland' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0288,
-          address: '\n3033 Shattuck Ave.\nBerkeley,\nCA\n94705\n',
-          lastUpdated: 'Fri Mar 22 2013 00:00:00 GMT-0700 (PDT)',
-          location: 'strong',
-          title: 'CBCB',
-          url: '/dispensaries/cbcb' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0289,
-          address: '\n3139 Mission Street\nSan Francisco,\nCA\n94110\n',
-          lastUpdated: 'Sat Jul 14 2012 00:00:00 GMT-0700 (PDT)',
-          location: 'strong',
-          title: 'Herbal Mission',
-          url: '/dispensaries/herbal-mission' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c028a,
-          address: '\n2928 Hilltop Mall Rd.\nUnit C\nRichmond,\nCA\n94806\n',
-          lastUpdated: 'Sat Dec 14 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Green Remedy',
-          url: '/dispensaries/green-remedy' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c028b,
-          address: '\n309 Cedar St.\n#39\nSanta Cruz,\nCA\n95060\n',
-          lastUpdated: 'Tue Dec 10 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'The Wo/Men\'s Alliance for Medical Marijuana',
-          url: '/dispensaries/the-womens-alliance-for-medical-marijuana' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c028c,
-          address: '\n843 Howard St.\nSan Francisco,\nCA\n94103\n',
-          lastUpdated: 'Mon Dec 09 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Green Door',
-          url: '/dispensaries/green-door' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c028d,
-          address: '\n891 Laurelwood Rd.\nSanta Clara,\nCA\n95054\n',
-          lastUpdated: 'Fri Dec 06 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Angel\'s Care Collective',
-          url: '/dispensaries/angels-care-collective' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c028e,
-          address: '\n4218 Mission St.\nSan Francisco,\nCA\n94112\n',
-          lastUpdated: 'Mon Dec 02 2013 00:00:00 GMT-0800 (PST)',
-          location: '',
-          title: 'The Green Cross',
-          url: '/dispensaries/the-green-cross' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c028f,
-          address: '\n211 12th St.\nSan Francisco,\nCA\n94103\n',
-          lastUpdated: 'Thu Nov 21 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'SF FOGG',
-          url: '/dispensaries/sf-fogg' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0292,
-          address: '\n1077 Post St.\nSan Francisco,\nCA\n94109\n',
-          lastUpdated: 'Sat Nov 16 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Grass Roots Clinic',
-          url: '/dispensaries/grass-roots-clinic' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0293,
-          address: '\n2590 Telegraph Ave.\nBerkeley,\nCA\n94704\n',
-          lastUpdated: 'Sun Nov 03 2013 00:00:00 GMT-0700 (PDT)',
-          location: 'strong',
-          title: 'Berkeley Patient\'s Care Collective',
-          url: '/dispensaries/berkeley-patients-care-collective' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0315,
-          address: '\n1724 S. Broadway\nDenver,\nCO\n80210\n',
-          lastUpdated: 'Sat Oct 12 2013 00:00:00 GMT-0700 (PDT)',
-          location: 'strong',
-          title: 'Wellspring Collective',
-          url: '/dispensaries/wellspring-collective' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c0319,
-          address: '\n2042 South Bannock Street\nDenver,\nCO\n80223\n',
-          lastUpdated: 'Sun Nov 24 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Artisanal Medicinals',
-          url: '/dispensaries/artisanal-medicinals' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c031a,
-          address: '\n4380 South Syracuse Street\nSuite 310\nDenver,\nCO\n80237\n',
-          lastUpdated: 'Sun Nov 24 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Green Man Cannabis',
-          url: '/dispensaries/green-man-cannabis' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c031c,
-          address: '\n11 West Hampden Avenue\nEnglewood,\nCO\n80110\n',
-          lastUpdated: 'Sun Nov 24 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Frosted Leaf - Englewood',
-          url: '/dispensaries/frosted-leaf-englewood' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c031d,
-          address: '\n6302 East Colfax\nDenver,\nCO\n80220\n',
-          lastUpdated: 'Sun Nov 24 2013 00:00:00 GMT-0800 (PST)',
-          location: 'strong',
-          title: 'Frosted Leaf - Colfax',
-          url: '/dispensaries/frosted-leaf-colfax' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c037b,
-          address: '\n2257 Curtis St.\nDenver,\nCO\n80205\n',
-          lastUpdated: 'Sat Oct 12 2013 00:00:00 GMT-0700 (PDT)',
-          location: 'strong',
-          title: 'ALCC',
-          url: '/dispensaries/alcc' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c03a2,
-          address: '\n4332 S. Broadway\nEnglewood,\nCO\n80113\n',
-          lastUpdated: 'Fri Oct 11 2013 00:00:00 GMT-0700 (PDT)',
-          location: 'strong',
-          title: 'Nature\'s Kiss Health & Wellness',
-          url: '/dispensaries/natures-kiss-health-wellness' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c03af,
-          address: '\n1337 Delaware St.\nSuite #2\nDenver,\nCO\n80204\n',
-          lastUpdated: 'Wed Mar 21 2012 00:00:00 GMT-0700 (PDT)',
-          location: 'strong',
-          title: 'Hawaiian Herbal Health Center',
-          url: '/dispensaries/hawaiian-herbal-health-center' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c03b3,
-          address: '\n1515 Adams St.\nDenver,\nCO\n80206\n',
-          lastUpdated: 'Wed Mar 21 2012 00:00:00 GMT-0700 (PDT)',
-          location: 'strong',
-          title: 'Buds On Colfax',
-          url: '/dispensaries/buds-on-colfax' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c03b5,
-          address: '\n3620 W Colorado Springs\nColorado Springs,\nCO\n80904\n',
-          lastUpdated: 'Wed Mar 21 2012 00:00:00 GMT-0700 (PDT)',
-          location: 'strong',
-          title: 'Garden of the Ganges',
-          url: '/dispensaries/garden-of-the-ganges' } },
-     { dispensaries: 
-        { _id: 52ad1b68ebb82088350c03c5,
-          address: '\n2960 S. Federal Blvd.\nDenver,\nCO\n80236\n',
-          lastUpdated: 'Wed Mar 21 2012 00:00:00 GMT-0700 (PDT)',
-          location: 'strong',
-          title: '410 Wellness',
-          url: '/dispensaries/410-wellness' } } ] }
+var base        = require( '../../lib/com/ganjazoid/ParserBaseClass' ),
+    nodeio      = require( 'node.io' ),
+    _           = require( 'underscore' ),
+    colors      = require( 'colors' ),
+    helpers     = require( '../../lib/com/ganjazoid/Helpers' ),
+    config      = require( '../../app/configs' );    
+    payload     = 0,
+    scope       = null,
+    numLoaded   = 0;
+    hotlistCollection = [],
+    summary           = {},
+    hotlistURLs       = [],
+    hotlist = {
+        getListing: function( overrideURL ) {
+            var self    = this;
+                url     = ( overrideURL ) ? overrideURL : null,
+                hasPagination   = false;
+
+            if( numLoaded < payload ) {
+                console.log( ' processing ', hotlistCollection[ numLoaded ] );
+                
+                console.log( '@@@@@@@@@@'.blue );
+                console.log( '@@@@@@@@@@'.red );
+                console.log( '@@@@@@@@@@ FETCHING: '.yellow.underline, ( url ) ? url : hotlistURLs[ numLoaded ] );
+                console.log( '@@@@@@@@@@'.bold, numLoaded+1 );
+                console.log( '@@@@@@@@@@'.red );
+                console.log( '@@@@@@@@@@'.blue );
+
+                scope.getHtml( hotlistURLs[ numLoaded ], function( err, $ ) {
+                    // if not, proceed to parse the page
+                    var menuRows,
+                        documentCollection,
+                        hasRows = false,
+                        items = [];
+
+                    try {
+                        menuRows    = $( '.flower-snippet .flower-details' );
+                        hasRows     = true;
+                        // tick up payload
+                    } catch( e ) {
+                        summary.errors++;
+                        console.log( 'no menu for dispensary' );
+                        //limit--;
+                    }
+
+                    // we have a menu
+                    if( hasRows ) {
+                        summary.menus++;
+                        summary.sources.push( dispensaries[ cur ] );
+                        // once we have the html we need to see if there is pagination
+                        var nextPage;
+                        try {
+                            nextPage        = $( '.pagination a' );
+                            hasPagination   = true;
+                            // it has it
+                        } catch( e ) {
+
+                        }
+
+                        // we need to request all subsequent pages, and add to the expected payload
+                        if( hasPagination ) {
+                            // need to grab the pagination only once, so lets make sure any pages are 
+                            for( var x = 0; x < nextPage.length; x++ ) {
+                                var href = self.formatURL( nextPage[ x ].attribs.href , true, false );
+                                // only inject if it's not there aleady
+                                if( -1 === hotlistURLs.indexOf( href ) &&  // if it's not in the list already 
+                                    -1 === href.indexOf( 'page=1' )) { // and it's not the first page in the pagination (since we hit the first page first, this is never relevant)
+                                    hotlistURLs.splice( numLoaded + 1, 0, href );
+                                    payload++;
+                                }
+                            }
+                        }
+                        self.processListing( menuRows, $ );
+                    }
+                });
+                numLoaded++;
+                self.getListing();
+            } else {
+                self.dispatch( self.constants.PROCESSS_COMPLETE );
+            }
+        },
+        processListing: function( menuRows, $, listingType ) {
+            var self = this;
+            if( undefined === menuRows ) {
+                return false;
+            }
+
+            if( undefined === listingType ) {
+                listingType = 'flower';
+            }
+
+            switch( listingType ) {
+                case "flower":
+                    for( var i = 0; i < menuRows.length; i++ ) {
+                        //console.log( 'processing column ' + i );
+
+                        // get nodes
+                        var nodeGroup       = {};
+                        nodeGroup.titleNode = $( 'h5 a',   menuRows[ i ] );
+                        nodeGroup.stats     = $( '.stats .stat', menuRows[ i ] );
+                        
+                        // parse data
+                        PriceModel.title          = nodeGroup.titleNode.children[ 0 ].raw;
+                        PriceModel.url            = nodeGroup.titleNode.attribs.href;
+                        PriceModel.meta           = [],
+                        PriceModel.type           = listingType,
+                        PriceModel.createdAt      = new Date();
+                        PriceModel.prices         = [];
+
+                        for( var z = 0; z < nodeGroup.stats.length; z++ ) {
+                            var value = nodeGroup.stats[ z ].children[ 0 ].children[ 0 ],
+                                key   = nodeGroup.stats[ z ].children[ 1 ].children[ 0 ];
+                            // this is the price section
+                            if( value.raw.indexOf( 'span class' ) > -1 ) {
+                                var prices      = {};
+                                prices.currency = ( value.children[ 0 ].raw === "$" )  ? 'US' : value.children[ 0 ].raw;
+                                prices.unit     = helpers.trim( nodeGroup.stats[ z ].children[ 1 ].children[ 0 ].raw );
+                                prices.price    = helpers.trim( nodeGroup.stats[ z ].children[ 0 ].children[ 1 ].raw );
+                                PriceModel.prices.push( prices );
+                            // this is the meta data section
+                            } else {
+                                PriceModel.meta.push({
+                                    key:    helpers.trim( key.raw ),
+                                    value:  helpers.trim( value.raw )
+                                });
+                            }
+                        }
+                        summary.items_parsed++;
+                        self.save( PriceModel );
+                    }
+                break;
+            }
+            return true;
+        },
+        save: function( data ) {
+            var self = this;
+            if( undefined === data ) {
+                return false;
+            }
+            self.models.hotlist.create( data, function( err, document, count ) {
+                if( err ) {
+                    console.log( 'error: ', err )
+                }
+            });
+        },
+        formatURL: function( slug, absolutePath, addTail ) {
+            var url = '',
+                tail = ( false === addTail ) ? '' : '/menu.html?type_name=Flowers'; // this is the base parameter to flowers
+            if( true === absolutePath ) {
+                url += config.setting('stickyguide');
+            }
+            return url + slug + tail;
+        },
+        enQueue: function() {
+            var self    = this,
+                results = null;
+            summary.errors          = 0,
+            summary.critical_errors = 0,
+            summary.success         = 0,
+            summary.menus           = 0,
+            summary.no_menus        = 0,
+            summary.time_stared     = new Date(),
+            summary.time_elapsed    = null,
+            summary.items_parsed    = 0,
+            summary.sources         = [];
+
+            var curModel = _.where( self.models, { name : 'hotlist' } );
+            curModel[0].model.find(function( err, resultSet ) {
+                if( err ) {
+                    throw err;
+                }
+                // with the results set, make sure you have documents,
+                // then build up a queue to process and hit the rucursive
+                // function until the listings are done 
+
+                console.log( '@@found records: ', resultSet.length );
+                hotlistCollection   = resultSet;
+                payload             = hotlistCollection.length;
+                if( resultSet === 0 ) {
+                    self.endProcess( 'no documents found, cannot procceed' );
+                    return;
+                }
+                for( var i in resultSet ) {
+                    hotlistURLs.push( self.formatURL( resultSet[ i ].url, true ) );
+                }
+                self.getListing();
+            });
+        }
+    };
+
+// IO RUNNER
+exports.job = new nodeio.Job({
+    timeout: 120,   // process life max
+    retries: 3,     //
+    max: 120        // threads max
+},
+{
+    input: false,
+    run: function() {
+        hotlist = _.extend( base.create(), hotlist );
+        scope = this;
+        hotlist.init( [ 'hotlist' ] );
+        hotlist.listen( hotlist.constants.CONNECTED_SUCCESS, function( err, result ) {
+            hotlist.enQueue();
+        });
+        hotlist.listen( hotlist.constants.PROCESSS_COMPLETE, function( err, result ) {
+            scope.emit( 'process exited with success' );
+        });
+    }
+});
