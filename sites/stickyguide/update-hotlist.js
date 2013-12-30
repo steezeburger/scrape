@@ -16,10 +16,9 @@ var nodeio          = require( 'node.io'                                ),
     _               = require( 'underscore'                             ),
     mongoose        = require( 'mongoose'                               ),
     colors          = require( 'colors'                                 ),
-    site            = require( './schema/site'                          ),
-    schemas         = require( './schema/regions'                       ),
-    helpers         = require( '../../lib/com/ganjazoid/Helpers'        ),
     config          = require( '../../app/configs'                      ),
+    schemas         = require( '../../app/schema'                       ),
+    helpers         = require( '../../lib/com/ganjazoid/Helpers'        ),
     payloadManager  = require( '../../lib/com/ganjazoid/PayloadManager' ),
     validator       = require( '../../lib/com/ganjazoid/ValidatorBase'  );
 
@@ -135,17 +134,17 @@ ScrapeController.prototype = {
 
     getSchemas: function() {
         var self = this;
-        DispensarySchema = mongoose.Schema( schemas.get( 'dispensary' ));
-        PriceSchema      = mongoose.Schema( schemas.get( 'price'      ));
-        HotlistSchema    = mongoose.Schema( schemas.get( 'hotlist'    ));
+        DispensarySchema = mongoose.Schema( schemas.get( 'stickyguide_dispensary' ));
+        PriceSchema      = mongoose.Schema( schemas.get( 'price'                  ));
+        HotlistSchema    = mongoose.Schema( schemas.get( 'stickyguide_hotlist'    ));
         return self;
     },
 
     getModels: function() {
         var self = this;
-        DispensaryModel = mongoose.model( 'DispensaryData', DispensarySchema );
-        PriceModel      = mongoose.model( 'Price',          PriceSchema      );
-        HotlistModel    = mongoose.model( 'Hotlist',        HotlistSchema    );
+        DispensaryModel = mongoose.model( 'stickyguide_dispensary', DispensarySchema );
+        PriceModel      = mongoose.model( 'price',                  PriceSchema      );
+        HotlistModel    = mongoose.model( 'stickyguide_hotlist',    HotlistSchema    );
         return self;
     },
 
@@ -351,7 +350,7 @@ ScrapeController.prototype = {
         var url = '',
             tail = ( false === addTail ) ? '' : '/menu.html?type_name=Flowers'; // this is the base parameter to flowers
         if( true === absolutePath ) {
-            url += config.setting('stickyguide');
+            url += config.setting( 'stickyguide' );
         }
         return url + slug + tail;
     },

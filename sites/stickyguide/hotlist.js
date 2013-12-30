@@ -139,7 +139,7 @@ var base        = require( '../../lib/com/ganjazoid/ParserBaseClass' ),
             }
             self.models.hotlist.create( data, function( err, document, count ) {
                 if( err ) {
-                    console.log( 'error: ', err )
+                    console.log( 'error: ', err );
                 }
             });
         },
@@ -199,7 +199,7 @@ exports.job = new nodeio.Job({
     run: function() {
         hotlist = _.extend( base.create(), hotlist );
         scope = this;
-        hotlist.init( [ 'hotlist' ] );
+        hotlist.init( [ 'stickyguide_hotlist' ] );
         hotlist.listen( hotlist.constants.CONNECTED_SUCCESS, function( err, result ) {
             hotlist.enQueue();
         });

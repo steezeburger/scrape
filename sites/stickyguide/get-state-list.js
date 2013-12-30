@@ -34,7 +34,7 @@ exports.job = new nodeio.Job({
         });
 
         // create data model
-        RegionModel = mongoose.model( 'RegionData', RegionSchema );
+        RegionModel = mongoose.model( 'stickyguide_region', RegionSchema );
 
         // gets location list of live locations
         var base                = 'https://www.stickyguide.com',

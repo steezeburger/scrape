@@ -1,10 +1,9 @@
 // REQUIRE
-var nodeio      = require( 'node.io'    ),
-    request     = require( 'request'    ),
-    _           = require( 'underscore' ),
-    mongoose    = require( 'mongoose'   ),
-    site        = require( './schema/site' ),
-    schemas     = require( './schema/regions' ),
+var nodeio      = require( 'node.io'          ),
+    request     = require( 'request'          ),
+    _           = require( 'underscore'       ),
+    mongoose    = require( 'mongoose'         ),
+    schemas     = require( '../../app/schema' ),
     validator   = require( '../../lib/com/ganjazoid/ValidatorBase' );
 
 // CONST
@@ -135,17 +134,17 @@ DispensaryController.prototype = {
 
     getSchemas: function() {
         var self = this;
-        RegionSchema        = mongoose.Schema( schemas.get( 'region' ) );
-        SubregionSchema     = mongoose.Schema( schemas.get( 'subregion' ) );
-        DispensarySchema    = mongoose.Schema( schemas.get( 'dispensary' ) );
+        RegionSchema        = mongoose.Schema( schemas.get( 'stickyguide_region' ) );
+        SubregionSchema     = mongoose.Schema( schemas.get( 'stickyguide_subregion' ) );
+        DispensarySchema    = mongoose.Schema( schemas.get( 'stickyguide_dispensary' ) );
         return self;
     },
 
     getModels: function() {
         var self = this;
-        RegionModel         = mongoose.model( 'RegionData',     RegionSchema );
-        SubregionModel      = mongoose.model( 'SubregionData',  SubregionSchema );
-        DispensaryModel     = mongoose.model( 'DispensaryData', DispensarySchema );
+        RegionModel         = mongoose.model( 'stickyguide_region',     RegionSchema );
+        SubregionModel      = mongoose.model( 'stickyguide_subregion',  SubregionSchema );
+        DispensaryModel     = mongoose.model( 'stickyguide_dispensary', DispensarySchema );
         return self;
     },
 
