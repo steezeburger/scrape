@@ -19,7 +19,9 @@ var nodeio          = require( 'node.io' ),
     config          = require( '../../app/configs' ),
     summary         = {},
     payloads        = {},
-    startURL        = 'https://www.weedmaps.com/',
+    dispensaries    = [],
+    dispensaryList  = [],
+    startURL        = 'https://www.weedmaps.com',
     __              = console.log,
     selectors       = {
         regionNav: ['.sr1',
@@ -33,9 +35,10 @@ var nodeio          = require( 'node.io' ),
                     '.sr9',
                     '.sr10',
                     '.sr11'
-                   ],           // anchor
-        regionsList: '#regionmenu li',      // gets list of outer regions
-        subRegions: '.sub li' // each list item will have 
+                   ],                           // anchor
+        regionsList: '#regionmenu li',          // gets list of outer regions
+        subRegions: '.sub li',                  // each list item will have 
+        dispensaryList: '#map-sidebar .listing h3 a'
     }
     scope       = null,
     dispensaryController = {
@@ -52,10 +55,11 @@ var nodeio          = require( 'node.io' ),
             summary.sources             = [];
             // init payloads
             payloads.dispensaries       = [];
+            payloads.dispensaries.completed = 0;
+            payloads.dispensaries.expecting = 0;
 
             __( 'start' );
-            var fullList        = [],
-                dispensaries    = [];
+            var fullList        = [];
             // get starting HTML
             scope.getHtml( startURL, function( err, $ ) {
                 _.each( selectors.regionNav, function( value, iterator, object ) {
@@ -105,9 +109,13 @@ var nodeio          = require( 'node.io' ),
                 
                 if( dispensaries.length ) {
                     var regions = self.getModel( 'weedmaps_region' );
-
+                    // kill the collection
                     regions.remove( function( err ) {
-                        _.each( dispensaries, function(value, i , object) {
+                        // init payloads
+                        payloads.dispensaries.completed = 0;
+                        payloads.dispensaries.expecting = dispensaries.length;
+                        // save each
+                        _.each( dispensaries, function( value, i , object ) {
                             regions.update(
                                 value,
                                 value,
@@ -116,24 +124,98 @@ var nodeio          = require( 'node.io' ),
                                     if( err ) {
                                         __( err );
                                     }
-                                    __( updated );
+                                    payloads.dispensaries.completed++;
+                                    if( payloads.dispensaries.completed === payloads.dispensaries.expecting ) {
+                                        // reset payload
+                                        payloads.dispensaries.completed = 0;
+                                        // move on to scrape pages
+                                        self.scrapeRegions();
+                                    }
                                 }
                             );
                         });
                     });
 
                 }
-
-                /*scope.emit();*/
-                //payloads.dispensaries = dispensaries.length;
-                //self.scrapeRegions();
             });
         },
         scrapeRegions: function() {
             var self = this;
+            __( 'getting', dispensaries[ payloads.dispensaries.completed ].name );
+            scope.getHtml( self.formatURL( dispensaries[ payloads.dispensaries.completed ].url, true ), function( err, $ ) {
+                if( err ) {
+                    __( err );
+                    payloads.dispensaries.completed++;    
+                    return self.scrapeRegions();
+                }
+                
+                try {
+                    var nodes = $( selectors.dispensaryList );
+                } catch( e ) {
+                    __( e );
+                    payloads.dispensaries.completed++;    
+                    return self.scrapeRegions();
+                }
+                
+                _.each( nodes, function( value, i, original ) {
+                    try {                
+                        var newListCollection = {
+                            name: value.attribs.title,
+                            url: value.attribs.href
+                        };
+                        dispensaryList.push( newListCollection );
+                        self.getModel('weedmaps_dispensary_urls').update(
+                            newListCollection,
+                            newListCollection,
+                            { upsert: true },
+                            function( err, updateCount ) {
+                                __('updateCount ',updateCount);
+                            }
+                        );
+                    } catch( e ) {
+                        __( e );
+                    }
+                });
 
-
-            
+                // tick up
+                payloads.dispensaries.completed++;
+                // end condition ?
+                if( payloads.dispensaries.completed === payloads.dispensaries.expecting ) {
+                    __( 'regions scraped' );
+                    scope.emit();
+                    /*payloads.dispensaries.completed = 0;
+                    payloads.dispensaries.expecting = dispensaryList.length;
+                    _.each( dispensaryList, function( _value, _i, _original ) {
+                        self.getModel('weedmaps_dispensary_urls').update(
+                            _value,
+                            _value,
+                            { upsert: true },
+                            function( err, updateCount ) {
+                                payloads.dispensaries.completed++;
+                                if( payloads.dispensaries.completed === payloads.dispensaries.expecting ) {
+                                    scope.emit();
+                                }
+                            }
+                        );
+                    });*/
+                } else {
+                    __( 'recurse ' );
+                    // recurse
+                    self.scrapeRegions();
+                }
+            });
+        },
+        formatURL: function( portion, abs, params ) {
+            var self = this,
+                url  = '';
+            if( abs ) {
+                url += startURL;
+            }
+            url += portion;
+            if( params ) {
+                url += params;
+            }
+            return url;
         }
     };
 
@@ -146,6 +228,6 @@ exports.job = new nodeio.Job({
     run: function() {
         scope                = this;
         dispensaryController = _.extend( base.create(), dispensaryController );
-        dispensaryController.init( [ 'weedmaps_region' ], 'start', [] );
+        dispensaryController.init( [ 'weedmaps_region', 'weedmaps_dispensary_urls' ], 'start', [] );
     }
 });

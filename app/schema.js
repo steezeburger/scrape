@@ -44,6 +44,12 @@ exports.get = function( which ) {
                 url: String
             }
         break;
+        case 'weedmaps_dispensary_urls':
+            schema = {
+                name: String,
+                url: String
+            }
+        break;
         case 'price':
             schema = {
                 title: String,
