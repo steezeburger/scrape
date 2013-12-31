@@ -98,15 +98,6 @@ var nodeio          = require( 'node.io' ),
                     });
                 });
                 
-                // is it a title?
-                /*
-                _.each( dispensaries, functions( value, i, original ) {
-                    if( value ) {
-
-                    }
-                });
-                */
-                
                 if( dispensaries.length ) {
                     var regions = self.getModel( 'weedmaps_region' );
                     // kill the collection
@@ -135,7 +126,6 @@ var nodeio          = require( 'node.io' ),
                             );
                         });
                     });
-
                 }
             });
         },
@@ -181,23 +171,8 @@ var nodeio          = require( 'node.io' ),
                 payloads.dispensaries.completed++;
                 // end condition ?
                 if( payloads.dispensaries.completed === payloads.dispensaries.expecting ) {
-                    __( 'regions scraped' );
+                    __( 'regions scrape complete' );
                     scope.emit();
-                    /*payloads.dispensaries.completed = 0;
-                    payloads.dispensaries.expecting = dispensaryList.length;
-                    _.each( dispensaryList, function( _value, _i, _original ) {
-                        self.getModel('weedmaps_dispensary_urls').update(
-                            _value,
-                            _value,
-                            { upsert: true },
-                            function( err, updateCount ) {
-                                payloads.dispensaries.completed++;
-                                if( payloads.dispensaries.completed === payloads.dispensaries.expecting ) {
-                                    scope.emit();
-                                }
-                            }
-                        );
-                    });*/
                 } else {
                     __( 'recurse ' );
                     // recurse
