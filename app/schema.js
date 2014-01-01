@@ -54,6 +54,7 @@ exports.get = function( which ) {
             schema = {
                 title: String,
                 type: String,
+                source: String,
                 prices: [
                     { 
                         price: Number,

@@ -1,4 +1,4 @@
-/**
+/*
   * @title:         Process Dispensary List
   * @author:        Brian Kenny <papaviking@gmail.com>
   * @version:       0.1
@@ -11,42 +11,180 @@ var nodeio  = require( 'node.io' ),
     _       = require( 'underscore' ),
     request = require( 'request' ),
     colors  = require( 'colors' ),
+    jquery  = require( 'jquery' ),
     helpers = require( '../../lib/com/ganjazoid/Helpers' ),
     base    = require( '../../lib/com/ganjazoid/ParserBaseClass' ),
     config  = require( '../../app/configs' ),
     __      = console.log,
+    startURL      = 'https://www.weedmaps.com',
     summary       = {},
     payloads      = {},
     dispensaries  = [],
+    offset        = null,
+    selector      = '.menu_item';
+
     scope         = null,
     dispensaryCrawler = {
-      start: function() {
+      start: function( _offset ) {
         var self = this;
         summary.errors              = 0,
         summary.critical_errors     = 0,
         summary.success             = 0,
         summary.time_stared         = new Date(),
         summary.time_elapsed        = null,
-        summary.regions_parsed      = 0,
-        summary.dispensaries_found  = 0,
-        summary.sources             = [];
+        summary.dispensaries_processed = 0,
+        summary.menu_items          = 0;
 
-        payloads.dispensaries           = [];
-        payloads.dispensaries.completed = 0;
-        payloads.dispensaries.expecting = 0;
+        if( _offset ) {
+          offset = _offset;
+        }
 
-        self.getPayload();
+        payloads = new self.loader();
+        payloads.init( 'weedmaps_dispensary_urls' );
+        payloads.init( 'prices' );
+        self.getCollection();
+
       },
-      getPayload: function() {
+      getCollection: function() {
         var self = this;
         self.getModel( 'weedmaps_dispensary_urls' ).find({}, function( err, collection ) {
+          if( err ) {
+            __( err );
+            summary.errors++;
+          }
           dispensaries = collection;
+          payloads.set( 'weedmaps_dispensary_urls', dispensaries.length );
           self.pillage();
         });
       },
+      formatURL: function( portion, abs, params ) {
+        var self = this,
+        url  = '';
+        if( abs ) {
+          url += startURL;
+        }
+        url += portion;
+        if( params ) {
+          url += params;
+        }
+        return url;
+      },
       pillage: function() {
         var self = this;
-        
+        var curIndex;
+        if( offset ) {
+          curIndex = offset;
+          payloads.tick( 'weedmaps_dispensary_urls', offset );
+          offset = null;
+        } else {
+          curIndex = payloads.cur( 'weedmaps_dispensary_urls' );
+        }
+        scope.getHtml( self.formatURL( dispensaries[ curIndex ].url, true ), function( err, $ ) {  
+          var items;
+          try {
+            items = $( selector );
+          } catch( e ) {
+            __( 'error: '.red, e );
+            summary.errors++;
+            payloads.tick( 'weedmaps_dispensary_urls' );
+            return self.pillage();
+          }
+          payloads.set( 'prices', ( payloads.cur( 'prices' ) + (items.length-1) ) );
+          _.each( items, function( value, i, original ) {
+            var hasData;
+            try {
+              hasData = value.attribs[ 'data-json' ];
+            } catch( e ) {
+              hasData = false;
+            }
+            if( hasData ) {
+              var honeypot = JSON.parse( helpers.decodeHTML( hasData )),
+                  category = value.attribs[ 'data-category-name' ],
+                  price = {
+                    title: honeypot.name,
+                    source: 'weedmaps',
+                    type: category,
+                    prices: [
+                        { 
+                          price: honeypot.price_eighth,
+                          unit: "eighth"
+                        },
+                        { 
+                          price: honeypot.price_gram,
+                          unit: "gram"
+                        },
+                        { 
+                          price: honeypot.price_half_gram,
+                          unit: "half-gram"
+                        },
+                        { 
+                          price: honeypot.price_half_ounce,
+                          unit: "half-ounce"
+                        },
+                        { 
+                          price: honeypot.price_ounce,
+                          unit: "ounce"
+                        },
+                        { 
+                          price: honeypot.price_quarter,
+                          unit: "quarter"
+                        },
+                        { 
+                          price: honeypot.price_unit,
+                          unit: "unit"
+                        }
+                    ],
+                    meta: [
+                        {
+                          key: "updated_at",
+                          value: honeypot.updated_at
+                        },
+                        {
+                          key: "strain_id",
+                          value: honeypot.strain_id
+                        },
+                        {
+                          key: "id",
+                          value: honeypot.id
+                        },
+                        {
+                          key: "image",
+                          value: honeypot.image.url
+                        },
+                        {
+                          key: "dispensary_id",
+                          value: honeypot.dispensary_id
+                        }
+                    ],
+                    createdAt: new Date()
+                  };
+                  self.getModel( 'price' ).create( price, function( err, savedItem ) {
+                    if( err ) {
+                      __( 'save error'.red , err );
+                      summary.errors++;
+                    } else {
+                      summary.menu_items++;
+                    }
+                    payloads.tick( 'prices' );
+                  });
+            } else {
+              payloads.tick( 'prices' );
+            }         
+          });
+
+          // keep track of the grande payload
+          payloads.tick( 'weedmaps_dispensary_urls' );
+          // end it?
+          if( payloads.met( 'weedmaps_dispensary_urls' ) && payloads.met( 'prices' ) ) {
+            summary.time_elapsed = new Date();
+            self.endProcess( summary );
+          } else {
+            summary.dispensaries_processed++;
+            __( 'dispensary payload'.green, payloads.cur( 'weedmaps_dispensary_urls' ), payloads.total( 'weedmaps_dispensary_urls' ) );
+            __( 'price payload'.yellow,     payloads.cur( 'prices' ),                   payloads.total( 'prices' ) );
+            self.pillage();
+          }
+        });
       }
     };
 
@@ -57,8 +195,49 @@ exports.job = new nodeio.Job({
 },{
     input: false,
     run: function() {
-        scope             = this;
+        scope = this;
+        var arg = null;
+        if( process.argv.length > 4 ) {
+          arg =  process.argv[ 4 ];
+        } 
         dispensaryCrawler = _.extend( base.create(), dispensaryCrawler );
-        dispensaryCrawler.init( [ 'weedmaps_dispensary_urls', 'price' ], 'start', {} );
+        dispensaryCrawler.init( [ 'weedmaps_dispensary_urls', 'price' ], 'start', arg );
     }
 });
+
+
+/*
+{ body: '',
+  body_html: null,
+  created_at: '2013-08-22T04:29:39Z',
+  deleted_at: null,
+  dispensary_id: 26199,
+  featured: false,
+  id: 3469568,
+  image: 
+   { url: '/assets/attachments_missing/menu_items/missing.png',
+     large: { url: '/assets/attachments_missing/menu_items/large_missing.png' },
+     medium: { url: '/assets/attachments_missing/menu_items/medium_missing.png' },
+     medium_wide: { url: '/assets/attachments_missing/menu_items/medium_wide_missing.png' },
+     medium_oriented: { url: '/assets/attachments_missing/menu_items/medium_oriented_missing.png' },
+     square: { url: '/assets/attachments_missing/menu_items/square_missing.png' },
+     small_wide: { url: '/assets/attachments_missing/menu_items/small_wide_missing.png' },
+     small: { url: '/assets/attachments_missing/menu_items/small_missing.png' } },
+  menu_item_category_id: 12,
+  name: 'Regular Joints ',
+  price_eighth: 0,
+  price_gram: 0,
+  price_half_gram: 0,
+  price_half_ounce: 0,
+  price_ounce: 0,
+  price_quarter: 0,
+  price_unit: 4,
+  primary_picture_id: null,
+  published: true,
+  slug: 'regular-joints',
+  strain_id: 23575,
+  updated_at: '2013-08-22T04:29:39Z',
+  vendor_product_id: null,
+  tested: false,
+  pictures: [] }
+*/

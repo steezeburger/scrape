@@ -279,6 +279,7 @@ ScrapeController.prototype = {
                     
                     // parse data
                     PriceModel.title          = nodeGroup.titleNode.children[ 0 ].raw;
+                    PriceModel.source         = 'stickyguide'
                     PriceModel.url            = nodeGroup.titleNode.attribs.href;
                     PriceModel.meta           = [],
                     PriceModel.type           = listingType,
