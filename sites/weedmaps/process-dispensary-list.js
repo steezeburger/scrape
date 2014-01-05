@@ -28,13 +28,14 @@ var nodeio  = require( 'node.io' ),
     dispensaryCrawler = {
       start: function( _offset ) {
         var self = this;
-        summary.errors              = 0,
-        summary.critical_errors     = 0,
-        summary.success             = 0,
-        summary.time_stared         = new Date(),
-        summary.time_elapsed        = null,
+
+        summary.errors                 = 0,
+        summary.critical_errors        = 0,
+        summary.success                = 0,
+        summary.time_stared            = new Date(),
+        summary.time_elapsed           = null,
         summary.dispensaries_processed = 0,
-        summary.menu_items          = 0;
+        summary.menu_items             = 0;
 
         if( _offset ) {
           offset = _offset;
@@ -54,6 +55,7 @@ var nodeio  = require( 'node.io' ),
             summary.errors++;
           }
           dispensaries = collection;
+          __( dispensaries.length );
           payloads.set( 'weedmaps_dispensary_urls', dispensaries.length );
           self.pillage();
         });
@@ -200,9 +202,10 @@ exports.job = new nodeio.Job({
         var arg = null;
         if( process.argv.length > 4 ) {
           arg =  process.argv[ 4 ];
-        } 
+        }
+
         dispensaryCrawler = _.extend( base.create(), dispensaryCrawler );
-        dispensaryCrawler.listen( strains.constants.COMPLETE, function( msg ) {
+        dispensaryCrawler.listen( dispensaryCrawler.constants.COMPLETE, function( msg ) {
             scope.emit( msg  );
         });
         dispensaryCrawler.init( [ 'weedmaps_dispensary_urls', 'price' ], 'start', arg );
