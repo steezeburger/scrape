@@ -1,11 +1,12 @@
-/*
-  * @title:         Process Dispensary List
-  * @author:        Brian Kenny <papaviking@gmail.com>
-  * @version:       0.1
-  * @description:   This crawls through the collection of dispensaries and parses their shit
-  *                 
-  * @dependencies:  node.io, underscore, request
-  **/
+
+  /**
+    * @title:         Process Dispensary List
+    * @author:        Brian Kenny <papaviking@gmail.com>
+    * @version:       0.1
+    * @description:   This crawls through the weedmaps collection of dispensaries and parses their shit
+    *                 
+    * @dependencies:  node.io, underscore, request
+    **/
 
 var nodeio  = require( 'node.io' ),
     _       = require( 'underscore' ),
@@ -175,7 +176,7 @@ var nodeio  = require( 'node.io' ),
           // keep track of the grande payload
           payloads.tick( 'weedmaps_dispensary_urls' );
           // end it?
-          if( payloads.met( 'weedmaps_dispensary_urls' ) && payloads.met( 'prices' ) ) {
+          if( payloads.met( 'weedmaps_dispensary_urls' ) /*&& payloads.met( 'prices' )*/ ) {
             summary.time_elapsed = new Date();
             self.endProcess( summary );
           } else {
@@ -201,43 +202,9 @@ exports.job = new nodeio.Job({
           arg =  process.argv[ 4 ];
         } 
         dispensaryCrawler = _.extend( base.create(), dispensaryCrawler );
+        dispensaryCrawler.listen( strains.constants.COMPLETE, function( msg ) {
+            scope.emit( msg  );
+        });
         dispensaryCrawler.init( [ 'weedmaps_dispensary_urls', 'price' ], 'start', arg );
     }
 });
-
-
-/*
-{ body: '',
-  body_html: null,
-  created_at: '2013-08-22T04:29:39Z',
-  deleted_at: null,
-  dispensary_id: 26199,
-  featured: false,
-  id: 3469568,
-  image: 
-   { url: '/assets/attachments_missing/menu_items/missing.png',
-     large: { url: '/assets/attachments_missing/menu_items/large_missing.png' },
-     medium: { url: '/assets/attachments_missing/menu_items/medium_missing.png' },
-     medium_wide: { url: '/assets/attachments_missing/menu_items/medium_wide_missing.png' },
-     medium_oriented: { url: '/assets/attachments_missing/menu_items/medium_oriented_missing.png' },
-     square: { url: '/assets/attachments_missing/menu_items/square_missing.png' },
-     small_wide: { url: '/assets/attachments_missing/menu_items/small_wide_missing.png' },
-     small: { url: '/assets/attachments_missing/menu_items/small_missing.png' } },
-  menu_item_category_id: 12,
-  name: 'Regular Joints ',
-  price_eighth: 0,
-  price_gram: 0,
-  price_half_gram: 0,
-  price_half_ounce: 0,
-  price_ounce: 0,
-  price_quarter: 0,
-  price_unit: 4,
-  primary_picture_id: null,
-  published: true,
-  slug: 'regular-joints',
-  strain_id: 23575,
-  updated_at: '2013-08-22T04:29:39Z',
-  vendor_product_id: null,
-  tested: false,
-  pictures: [] }
-*/

@@ -50,6 +50,12 @@ exports.get = function( which ) {
                 url: String
             }
         break;
+        case 'leafly_dispensary_urls':
+            schema = {
+                name: String,
+                url: String
+            }
+        break;
         case 'price':
             schema = {
                 title: String,
@@ -69,6 +75,20 @@ exports.get = function( which ) {
                     }
                 ],
                 createdAt: Date
+            }
+        break;
+        case 'leafly_strains':
+            schema = {  
+                name:       String,
+                category:   String,
+                url:        String
+            }
+        break;
+        case 'seedfinder_strains':
+            schema = {  
+                name:       String,
+                category:   String,
+                url:        String
             }
         break;
     }
