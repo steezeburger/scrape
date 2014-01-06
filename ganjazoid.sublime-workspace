@@ -4,6 +4,34 @@
 		"selected_items":
 		[
 			[
+				"ne",
+				"nextPage"
+			],
+			[
+				"getPay",
+				"getPayloadTotal"
+			],
+			[
+				"end",
+				"endProcess"
+			],
+			[
+				"payload",
+				"payloadItemTick"
+			],
+			[
+				"region",
+				"regionsLoaded"
+			],
+			[
+				"sa",
+				"saveResult"
+			],
+			[
+				"Disp",
+				"DispensaryModel"
+			],
+			[
 				"spe",
 				"specialCharacters"
 			],
@@ -27,6 +55,22 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "sites/stickyguide/get-dispensary-list.js",
+			"settings":
+			{
+				"buffer_size": 12113,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "sites/stickyguide/hotlist.js",
+			"settings":
+			{
+				"buffer_size": 9149,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -143,6 +187,44 @@
 	},
 	"file_history":
 	[
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/sites/stickyguide/schema/site.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/sites/stickyguide/schema/regions.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/sites/stickyguide/update-hotlist.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/lib/com/ganjazoid/Helpers.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/app/run.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/app/configs.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/lib/com/ganjazoid/PayloadManager.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/SCRATCH",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/sites/stickyguide/hotlist.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/sites/stickyguide/scrape.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/sites/stickyguide/get-dispensary-list.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/node_modules/mongoose/lib/schema.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/node_modules/node-inspector/front-end/SearchController.js",
+		"/Users/brian.kenny/Desktop/AP Watch Browser/AP Watch Browser/CustomNSURLRequest.m",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/node_modules/mongoose/lib/schema/boolean.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/node_modules/mongoose/lib/schema/array.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/node_modules/mongoose/examples/geospatial/geoJSONSchema.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/Sticky Guide Data Schema",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/Sticky Guide Data Schema",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/node_modules/mongoose/lib/error/missingSchema.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/node_modules/mongoose/examples/schema/storing-schemas-as-json/schema.json",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/node_modules/mongoose/examples/schema/schema.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/node_modules/mongoose/lib/schematype.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/node_modules/mongoose/lib/schemadefault.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/node_modules/node.io/node_modules/jsdom/node_modules/cssstyle/lib/properties/speakHeader.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/node_modules/coffee/node_modules/mocha/lib/reporters/html-cov.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/node_modules/coffee/node_modules/sinon-chai/lib/sinon-chai.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/save.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/sites/stickyguide/get-states-regions.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/sites/stickyguide/get-state-subregions.js",
+		"/Users/brian.kenny/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/lib/com/ganjazoid/ValidatorBase.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/lib/com/ganjazoid/ParserBaseClass.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/package.json",
+		"/Users/brian.kenny/Dropbox/Odopod/Sony Frontend/sony-global-front-end/src/packages/modules/gallery-g2-g3/js/index.js",
+		"/Users/brian.kenny/Dropbox/Odopod/Sony Frontend/sony-global-front-end/src/packages/modules/gallery-g2-g3/js/gallery-g2-g3.js",
+		"/Users/brian.kenny/Dropbox/Odopod/sfo-audemars-piguet/website/web/js/ewb/app.js",
+		"/Users/brian.kenny/Dropbox/ganjazoid2/scrape/node_modules/node.io/lib/node.io/job.js",
 		"/Users/newuser/Dropbox/ganjazoid2/scrape/stickyguide.js",
 		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/gallery-g2-g3/demo/data/gallery-compare-standalone.json",
 		"/Users/KBK/Dropbox/Odopod/Sony Content Integration/sony-global-front-end/src/packages/modules/gallery-g2-g3/demo/gallery-compare-standalone-demo.jade",
@@ -195,7 +277,7 @@
 	],
 	"find":
 	{
-		"height": 36.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -212,6 +294,56 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			".sources",
+			"try",
+			"this.debug",
+			"formatURL",
+			"pageURLs",
+			"pageData",
+			"payloads",
+			"getListing",
+			"config",
+			"request",
+			"getPayload",
+			"save",
+			"payloadInit",
+			"payloadItemTick",
+			"pageData",
+			"payloadTick",
+			"payloadItemTick",
+			"getPayloadTotal",
+			"getPayloadItemsLoaded",
+			"getPayload",
+			"setPayload",
+			"setPayloadItem",
+			"setPayloadTotal",
+			"payloadTick",
+			"analysePage",
+			"+ 1",
+			"setPayload",
+			"which dispensaries value",
+			"getPayload",
+			"setPayloadTotal",
+			"setPayload",
+			"getPayloadTotal",
+			"getPayloadItemsLoaded",
+			"getPayloadItemsLoaded\ngetPayloadItemsLoaded",
+			"getPayloadItemsLoaded",
+			"pageData",
+			"payloadItemTick",
+			"processPage",
+			"processing complete",
+			"payloads[ 'totalDispensaries' ]",
+			"processRecords",
+			"saveResult",
+			"document not written",
+			"getHTML",
+			"emit",
+			"regionsLoadedSuccess",
+			"regionsToLoad",
+			"regionsLoade",
+			"payload",
+			"processRecords",
 			"LCMCSVHB",
 			"data.meta",
 			"ghost-center",
@@ -289,41 +421,7 @@
 			"menu_pos_1=2&menu_pos_2=1&language=en",
 			"aPage",
 			"relations",
-			"relation",
-			"apStoreLocations",
-			"wheretobuy",
-			"WhereTo",
-			"Store",
-			"StoreLo",
-			"apWhereToBuy",
-			"relations",
-			"refer",
-			"ref",
-			"relations",
-			"Trans",
-			"where",
-			"whereT",
-			"Translate",
-			"list-",
-			"list-bou",
-			"continent>",
-			"continent \\/>",
-			"continent \\/\\>",
-			"continent />",
-			"continent",
-			"continentcontinent",
-			"continent",
-			"locations",
-			"$this->locations",
-			"locations",
-			"$myLoc",
-			"google",
-			"novelty-name",
-			"novelty-name ",
-			"magnifier-ti",
-			"sql",
-			"    ",
-			" "
+			"relation"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -358,14 +456,163 @@
 			]
 		},
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "sites/stickyguide/get-dispensary-list.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12113,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close"
+							],
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "sites/stickyguide/hotlist.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 9149,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close"
+							],
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 0.0
+		"height": 25.0
 	},
 	"input":
 	{
@@ -412,6 +659,10 @@
 	{
 		"height": 112.0
 	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
 	"output.xdebug_execute":
 	{
 		"height": 112.0
@@ -419,7 +670,7 @@
 	"project": "ganjazoid.sublime-project",
 	"replace":
 	{
-		"height": 64.0
+		"height": 46.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -427,6 +678,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"schema",
+				"ganjazoid2/scrape/sites/stickyguide/schema/regions.js"
+			],
 			[
 				"gallery-compare-standalone",
 				"src/packages/modules/gallery-g2-g3/demo/data/gallery-compare-standalone.json"
@@ -473,7 +728,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 198.0,
+	"side_bar_width": 206.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

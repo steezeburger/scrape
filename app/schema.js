@@ -77,6 +77,27 @@ exports.get = function( which ) {
                 createdAt: Date
             }
         break;
+        case 'price.clean':
+            schema = {
+                title: String,
+                type: String,
+                source: String,
+                prices: [
+                    { 
+                        price: Number,
+                        unit: String,
+                        denotion: String
+                    }
+                ],
+                meta: [
+                    {
+                        key: String,
+                        value: String
+                    }
+                ],
+                createdAt: Date
+            }
+        break;
         case 'leafly_strains':
             schema = {  
                 name:       String,

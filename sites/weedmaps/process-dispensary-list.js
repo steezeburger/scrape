@@ -26,7 +26,7 @@ var nodeio  = require( 'node.io' ),
 
     scope         = null,
     dispensaryCrawler = {
-      start: function( _offset ) {
+      start: function() {
         var self = this;
 
         summary.errors                 = 0,
@@ -37,8 +37,9 @@ var nodeio  = require( 'node.io' ),
         summary.dispensaries_processed = 0,
         summary.menu_items             = 0;
 
-        if( _offset ) {
-          offset = _offset;
+        if( self.startAt ) {
+          __('setting offset', self.startAt);
+          offset = self.startAt;
         }
 
         payloads = new self.loader();
@@ -55,8 +56,9 @@ var nodeio  = require( 'node.io' ),
             summary.errors++;
           }
           dispensaries = collection;
-          __( dispensaries.length );
-          payloads.set( 'weedmaps_dispensary_urls', dispensaries.length );
+          __( '@@ queued '.green, dispensaries.length );
+          var maxVal = ( self.endAt && self.endAt <= dispensaries.length ) ? self.endAt : dispensaries.length;
+          payloads.set( 'weedmaps_dispensary_urls', maxVal );
           self.pillage();
         });
       },
@@ -80,6 +82,7 @@ var nodeio  = require( 'node.io' ),
           payloads.tick( 'weedmaps_dispensary_urls', offset );
           offset = null;
         } else {
+          /*__( 'payloads.cur', payloads.cur( 'weedmaps_dispensary_urls' ) );*/
           curIndex = payloads.cur( 'weedmaps_dispensary_urls' );
         }
         scope.getHtml( self.formatURL( dispensaries[ curIndex ].url, true ), function( err, $ ) {  
@@ -199,15 +202,16 @@ exports.job = new nodeio.Job({
     input: false,
     run: function() {
         scope = this;
-        var arg = null;
-        if( process.argv.length > 4 ) {
-          arg =  process.argv[ 4 ];
-        }
 
         dispensaryCrawler = _.extend( base.create(), dispensaryCrawler );
         dispensaryCrawler.listen( dispensaryCrawler.constants.COMPLETE, function( msg ) {
             scope.emit( msg  );
         });
-        dispensaryCrawler.init( [ 'weedmaps_dispensary_urls', 'price' ], 'start', arg );
+        try { 
+          dispensaryCrawler.init( [ 'weedmaps_dispensary_urls', 'price' ], 'start', process.argv );
+        } catch( e ) {
+          __( e );
+        }
+        
     }
 });

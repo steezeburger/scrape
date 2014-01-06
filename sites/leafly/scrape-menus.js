@@ -145,13 +145,18 @@ exports.job = new nodeio.Job({
 },{
   input: false,
   run: function() {
-    scope = this;
+    scope = this, start, end;
     scraper = _.extend( base.create(), scraper );
     scraper.listen( scraper.constants.PROCESS_COMPLETE, function() {
       scope.emit();
     });
-
-    scraper.init( [ 'leafly_dispensary_urls', 'price' ], 'start', arg );
+    if( process.argv.length > 4 ) {
+      start =  process.argv[ 4 ];
+    }
+    if( process.argv.length > 5 ) {
+      end =  process.argv[ 5 ];
+    }
+    scraper.init( [ 'leafly_dispensary_urls', 'price' ], 'start', start, end );
   }
 });
 
