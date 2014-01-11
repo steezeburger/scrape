@@ -34,6 +34,9 @@ var nodeio  = require( 'node.io' ),
           if( err ) {
             __( 'err', err );
           }
+          
+          __( docs.length );
+
           payloads.set( 'leafly_dispensary_urls', docs.length );
           urls = docs;
           self.getMenu();
@@ -145,18 +148,18 @@ exports.job = new nodeio.Job({
 },{
   input: false,
   run: function() {
-    scope = this, start, end;
+    __( 'run' );
+    scope = this;
     scraper = _.extend( base.create(), scraper );
     scraper.listen( scraper.constants.PROCESS_COMPLETE, function() {
       scope.emit();
     });
-    if( process.argv.length > 4 ) {
-      start =  process.argv[ 4 ];
+    try {
+      __( 'init' );
+      scraper.init( [ 'leafly_dispensary_urls', 'price' ], 'start', process.argv );
+    } catch( e ) {
+      __( 'error', e );
     }
-    if( process.argv.length > 5 ) {
-      end =  process.argv[ 5 ];
-    }
-    scraper.init( [ 'leafly_dispensary_urls', 'price' ], 'start', start, end );
   }
 });
 

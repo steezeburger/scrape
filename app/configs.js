@@ -2,12 +2,11 @@ var configuration = function() {};
 configuration.prototype = {
 	stickyguide: 'https://www.stickyguide.com',
 	databaseURL: 'mongodb://localhost/ganjazoid',
-
-
-
-
-
-
+	constants: {
+		STICKYGUIDE: 1,
+		LEAFLY: 	 2,
+		WEEDMAPS:    3,
+	},
 	set: function( key, value ) {
 		this[ key ] = value;
 		return self[ key ];

@@ -64,16 +64,25 @@ var _       = require( 'underscore' ),
         },
         toiletpaper: function( start, docs ) {
             var self = this;
-            __('queue place'.green, cur );
+            __('queue place'.white, cur );
             __('remaining'.green, batchPayload - cur );
             __('total'.yellow, batchPayload );
-            // TODO process docs
-            // ...
-            // ...
+            // process docs
+            if( undefined !== docs ) {
+                _.each( docs, function( v, i , o ) {
+                    __( v );
+                    // remove dollar and numbers immediately after till next whitespace    
+                });
+            }
+                
+            
             if( cur < batchPayload ) {
                 var query = ( start ) ? self.queue( start ) : self.queue();
                 setTimeout( function() {
                     query.exec(function( err, docs ) {
+                        if( err ) {
+                            __( 'err', err );
+                        }
                         self.toiletpaper( null, docs );
                     });
                 }, 1000);
@@ -101,7 +110,7 @@ str2 = str2.replace( match[0] + ' ' , '' );
 */
 
 // clear all parenthesis contents
-// remove dollar and numbers immediately after till next whitespace
+
 // remove html entity encodings &#x27; and use a single quote?
 // remove strings * things like this * and 
 //                ** things like this **, and 
