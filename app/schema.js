@@ -56,6 +56,21 @@ exports.get = function( which ) {
                 url: String
             }
         break;
+        case 'items':               // new version of prices
+            schema = {
+                t:  String,         // title
+                n:  String,         // normalized value
+                ty: String,         // type
+                s:  String,         // source 0=weedmaps,1=leafly,2=stickyguide
+                ps: [               // prices
+                    { 
+                        p: Number,  // price
+                        u: String   // unit
+                    }
+                ],
+                cr: Date
+            }
+        break;
         case 'price':
             schema = {
                 title: String,
@@ -110,6 +125,22 @@ exports.get = function( which ) {
                 name:       String,
                 category:   String,
                 url:        String
+            }
+        break;
+        case 'scrape_queue':
+            schema = {
+                isRunning: Boolean,
+                Queue: [
+                    {
+                        batchId:    String,
+                        isRunning:  Boolean,
+                        startVal:   String,
+                        endVal:     String,
+                        started:    Date,
+                        completed:  Date,
+                        exitCode:   String 
+                    }
+                ]
             }
         break;
     }

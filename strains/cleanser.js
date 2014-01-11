@@ -22,7 +22,7 @@ var _       = require( 'underscore' ),
     start     = null,
     cur       = 0,
     end       = null,
-    limitDefault = 50,
+    limitDefault = 1,
     limit     = null,
     batchPayload = 0,
     scope   = this,
@@ -30,7 +30,7 @@ var _       = require( 'underscore' ),
     cleanser = {
         start: function() {
             var self   = this,
-                model  = self.getModel( 'prices' );
+                model  = self.getModel( 'items' );
                 start  = self.startAt || 0;
                 limit  = self.limitTo || limitDefault;
                 end    = self.endAt   || null;
@@ -39,8 +39,8 @@ var _       = require( 'underscore' ),
         },
         fetchBatchSize: function() {
             var self   = this,
-                model  = self.getModel( 'prices' );
-            model.find({type: {
+                model  = self.getModel( 'items' );
+            model.find({ty: {
                 $in: [ "flower", "Indica", "Sativa", "Hybrid" ]
             }}).count().exec(function( err, count ) {
                 __( 'records to process', count );
@@ -50,14 +50,14 @@ var _       = require( 'underscore' ),
         },
         queue: function( start ) {
             var self = this,
-                model  = self.getModel( 'prices' );
+                model  = self.getModel( 'items' );
             if( start ) {
                 cur = start;
             } else {
                 cur += limit;
             }
             return model.find({
-                type: {
+                ty: {
                     $in: [ "flower", "Indica", "Sativa", "Hybrid" ]
                 }
             }).skip( cur ).limit( limit );
@@ -67,29 +67,91 @@ var _       = require( 'underscore' ),
             __('queue place'.white, cur );
             __('remaining'.green, batchPayload - cur );
             __('total'.yellow, batchPayload );
+
             // process docs
             if( undefined !== docs ) {
                 _.each( docs, function( v, i , o ) {
-                    __( v );
-                    // remove dollar and numbers immediately after till next whitespace    
+                    
+                    
                 });
+            } else {
+                __( 'error with document' );
             }
                 
             
             if( cur < batchPayload ) {
                 var query = ( start ) ? self.queue( start ) : self.queue();
-                setTimeout( function() {
+                //setTimeout( function() {
                     query.exec(function( err, docs ) {
                         if( err ) {
                             __( 'err', err );
                         }
                         self.toiletpaper( null, docs );
                     });
-                }, 1000);
+                //}, 1000);
                 
             } else {
                 self.endProcess();
             }
+        },
+
+        /***********************/
+        /* CLEANSING FUNCTIONS */
+        /***********************/
+
+        removeDelimitedContent: function() {
+            var delimiters = [
+                    '*', '**', '***', '****', '!', '"', '-', '--'  // singular delimeters 
+                    ['[',']'], ['(',')'], ['|','|']  // enclosing delimiters
+                ]
+            ];
+        },
+        removeItems: function() {
+            var bullshitWords = [
+                'd.o.g.o',
+                'dogo',
+                'sale',
+                'hybrid',
+                'indica',
+                'sativa',
+                '1/2',
+                '1/4',
+                '1/8th',
+                '1/8',
+                '1/2',
+                'ounce',
+                'eigth',
+                'quarter',
+                'thc',
+                'cbd'
+            ]
+            var bullshitCharacters = [
+                '◆',
+                '~',
+                '!',
+                '#',
+                '$',
+                '%'
+            ]
+        },
+
+        removeContentSides: function() {
+
+        },
+        
+        itemReplace: function() {
+            var normalized = [
+                { 
+                    original: ' og ', 
+                    replace:[
+                        ' o.g.'
+                    ]
+                }
+            ];
+        },
+
+        itemRegexRemove: function() {
+
         }
     };
 
@@ -98,7 +160,7 @@ var _       = require( 'underscore' ),
     cleanser.listen( cleanser.constants.PROCESS_COMPLETE, function() {
       
     });
-    cleanser.init( [ 'prices' ], 'start', process.argv );
+    cleanser.init( [ 'items', 'items', 'items', 'items' ], 'start', process.argv );
 
 /*
 // gets ride of parenthesis and contents

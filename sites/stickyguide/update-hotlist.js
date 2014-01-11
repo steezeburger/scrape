@@ -43,7 +43,6 @@ var ScrapeController,
     dispensaries    = [],
     summary         = {},
     Validator       = validator.getInstance(),
-    //payloads        = payloadManager.payload(),
     originalData    = null,
     pageURLs        = [],
     cur             = 0,
@@ -135,7 +134,7 @@ ScrapeController.prototype = {
     getSchemas: function() {
         var self = this;
         DispensarySchema = mongoose.Schema( schemas.get( 'stickyguide_dispensary' ));
-        PriceSchema      = mongoose.Schema( schemas.get( 'price'                  ));
+        PriceSchema      = mongoose.Schema( schemas.get( 'items'                  ));
         HotlistSchema    = mongoose.Schema( schemas.get( 'stickyguide_hotlist'    ));
         return self;
     },
@@ -143,7 +142,7 @@ ScrapeController.prototype = {
     getModels: function() {
         var self = this;
         DispensaryModel = mongoose.model( 'stickyguide_dispensary', DispensarySchema );
-        PriceModel      = mongoose.model( 'price',                  PriceSchema      );
+        PriceModel      = mongoose.model( 'items',                  PriceSchema      );
         HotlistModel    = mongoose.model( 'stickyguide_hotlist',    HotlistSchema    );
         return self;
     },
@@ -185,12 +184,8 @@ ScrapeController.prototype = {
             // url =  ""; 
             // self.formatURL( doc[0].url );
 
-            console.log( '@@@@@@@@@@'.blue );
-            console.log( '@@@@@@@@@@'.red );
             console.log( '@@@@@@@@@@ FETCHING: '.yellow.underline, ( url ) ? url : pageURLs[ cur ] );
             console.log( '@@@@@@@@@@'.bold, cur+1 );
-            console.log( '@@@@@@@@@@'.red );
-            console.log( '@@@@@@@@@@'.blue );
 
             // get the page
             var whichUrl = ( url ) ? url : pageURLs[ cur ];
@@ -208,7 +203,7 @@ ScrapeController.prototype = {
                     // tick up payload
                 } catch( e ) {
                     summary.errors++;
-                    console.log( 'no menu for dispensary' );
+                    console.log( 'no menu for dispensary', hasRows );
                     //limit--;
                 }
 
@@ -278,13 +273,12 @@ ScrapeController.prototype = {
                     nodeGroup.stats     = $( '.stats .stat', menuRows[ i ] );
                     
                     // parse data
-                    PriceModel.title          = nodeGroup.titleNode.children[ 0 ].raw;
-                    PriceModel.source         = 'stickyguide'
-                    PriceModel.url            = nodeGroup.titleNode.attribs.href;
-                    PriceModel.meta           = [],
-                    PriceModel.type           = listingType,
-                    PriceModel.createdAt      = new Date();
-                    PriceModel.prices         = [];
+                    PriceModel.t   = nodeGroup.titleNode.children[ 0 ].raw,
+                    PriceModel.n   = '', // to be processed later
+                    PriceModel.s   = 2,
+                    PriceModel.ty  = listingType,
+                    PriceModel.cr  = new Date();
+                    PriceModel.ps  = [];
 
                     for( var z = 0; z < nodeGroup.stats.length; z++ ) {
                         var value = nodeGroup.stats[ z ].children[ 0 ].children[ 0 ],
@@ -292,16 +286,9 @@ ScrapeController.prototype = {
                         // this is the price section
                         if( value.raw.indexOf( 'span class' ) > -1 ) {
                             var prices      = {};
-                            prices.currency = ( value.children[ 0 ].raw === "$" )  ? 'US' : value.children[ 0 ].raw;
-                            prices.unit     = helpers.trim( nodeGroup.stats[ z ].children[ 1 ].children[ 0 ].raw );
-                            prices.price    = helpers.trim( nodeGroup.stats[ z ].children[ 0 ].children[ 1 ].raw );
-                            PriceModel.prices.push( prices );
-                        // this is the meta data section
-                        } else {
-                            PriceModel.meta.push({
-                                key:    helpers.trim( key.raw ),
-                                value:  helpers.trim( value.raw )
-                            });
+                            prices.u = helpers.trim( nodeGroup.stats[ z ].children[ 1 ].children[ 0 ].raw );
+                            prices.p = helpers.trim( nodeGroup.stats[ z ].children[ 0 ].children[ 1 ].raw );
+                            PriceModel.ps.push( prices );
                         }
                     }
                     summary.items_parsed++;
