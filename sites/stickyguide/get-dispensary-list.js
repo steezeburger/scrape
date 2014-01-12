@@ -2,6 +2,7 @@
 var nodeio      = require( 'node.io'          ),
     request     = require( 'request'          ),
     _           = require( 'underscore'       ),
+    __          = console.log,
     mongoose    = require( 'mongoose'         ),
     schemas     = require( '../../app/schema' ),
     validator   = require( '../../lib/com/ganjazoid/ValidatorBase' );
@@ -30,8 +31,6 @@ var DispensaryController,
 
 DispensaryController = function() {
     var self = this;
-    console.log( '@ Dispensary Scraper Loaded' );
-    console.log(Validator.constants);
 };
 
 DispensaryController.prototype = {
@@ -46,7 +45,6 @@ DispensaryController.prototype = {
         self.payloadInit( 'regions' );
         self.payloadInit( 'dispensaries' );
 
-        console.log( '@ Dispensary Controller: init' );
         self.getSchemas().getModels().connect();
         return self;
     },
@@ -88,9 +86,9 @@ DispensaryController.prototype = {
             // if all tha pages are loaded, and analysed, lets move on to parsing
             if( self.payloadMet( 'regions' ) ) {
                 // move along
-                console.log( '@ regions and page processing complete. Ended up with this many: ', self.getPayloadItemsLoaded( 'regions' ) );
-                console.log( '@ how many dispensaries?: ', self.getPayload( 'dispensaries' ) );
-                console.log( '@ moving to store urls' );
+                __( '@ regions and page processing complete. Ended up with this many: ', self.getPayloadItemsLoaded( 'regions' ) );
+                __( '@ how many dispensaries?: ', self.getPayload( 'dispensaries' ) );
+                __( '@ moving to store urls' );
 
                 self.saveResults();
                 

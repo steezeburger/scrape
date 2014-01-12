@@ -35,6 +35,16 @@ var ScrapeController,
     Validator       = validator.getInstance(),
     originalData    = null,
     pageURLs        = [],
+    pageURLtypes    = [],
+    stickyGuideTypes = [
+        'topicals',
+        'accessories',
+        'concentrates',
+        'edibles',
+        'seeds_clones',
+        'flowers',
+        'prerolls'
+    ],
     cur             = 0,
     limit           = 0,
     ScrapeController = {
@@ -52,6 +62,11 @@ var ScrapeController,
             summary.items_parsed    = 0,
             summary.sources         = [];
 
+            if( self.startAt ) {
+                cur = self.startAt;
+            } 
+
+
             self.enQueue();
 
             return self;
@@ -59,27 +74,38 @@ var ScrapeController,
 
         enQueue: function() {
             var self = this;
-            this.getModel( 'stickyguide_dispensaries' ).find(function( err, result ) {
+            var query = this.getModel( 'stickyguide_dispensaries' ).find().select( 'url' );
+            query.exec( function( err, result ) {
+                /* WHA?????? its fucked up unless I serialize it */
+                var hmm = JSON.stringify( result );
+                hmm = JSON.parse( hmm );
                 if( result === 0 ) {
                     self.endProcess( 'no documents found, cannot procceed' );
                     return;
                 } else {
-                    cur             = 0;
-                    limit           = result.length; // 1 to test
                     originalData    = result;
                     temp            = [];
                     // TEST
                     //pageURLs.push( self.formatURL( '/dispensaries/natural-herbal-pain-relief', true ) );
-
-                    for( var i in result ) {
-                        dispensaries.push( result[ i ] );
-                        pageURLs.push( self.formatURL( result[ i ].url, true, true, 'flowers' ) );
-                    }
+                    //  ITS NOT LETTING ME READ THE URL PROPERTY OF THE DOCUMENT WTOFFFFFFF 
+                    _.each( hmm, function( v, i, o ) {
+                        dispensaries.push( v );
+                        _.each( stickyGuideTypes, function( _v, _i, _o ) {
+                            var newUrl = self.formatURL( v.url, true, true, _v ); //slug, absolutePath, addTail, schema
+                            pageURLs.push( newUrl );
+                            pageURLtypes.push( _v );
+                        });                        
+                    });
                     // for testing, use override=http://url for single use
                     if( self.argOverrideURL ) {
                         pageURLs = [];
-                        pageURLs.push( self.formatURL( self.argOverrideURL, true, true, 'flowers' ) );
+                        _.each( stickyGuideTypes, function( v, i, o ) {
+                            pageURLs.push( self.formatURL( self.argOverrideURL, true, true, v ) );
+                            pageURLtypes.push( v );
+                        });
                     }
+
+                    limit = ( self.endAt ) ? self.endAt : pageURLs.length; // 1 to test
                     self.getListing();
                 }
             });
@@ -99,11 +125,12 @@ var ScrapeController,
                 // url =  ""; 
                 // self.formatURL( doc[0].url );
 
-                __( '@@@@@@@@@@ FETCHING: '.yellow.underline, ( url ) ? url : pageURLs[ cur ] );
-                __( '@@@@@@@@@@'.bold, cur+1 );
+                __( '@ url: '.yellow.underline, ( url ) ? url : pageURLs[ cur ] );
+                __( '@ at: '.bold, parseInt(cur)+1 );
+                __( '@ total: '.green, pageURLs.length );
 
                 // get the page
-                var whichUrl = ( url ) ? url : pageURLs[ cur ];
+                var whichUrl = ( url ) ? url : pageURLs[ cur ];                    
                 scope.getHtml( whichUrl, function( err, $ ) {
 
                     // if not, proceed to parse the page
@@ -115,11 +142,11 @@ var ScrapeController,
                     try {
                         menuRows    = $( '.flower-snippet .flower-details' );
                         hasRows     = true;
-                        __('data');
+                        __( 'data detected'.green.underline );
                         // tick up payload
                     } catch( e ) {
                         summary.errors++;
-                        __( 'no menu for dispensary', hasRows );
+                        __( '! no menu for dispensary'.red, hasRows );
                         //limit--;
                     }
 
@@ -142,7 +169,7 @@ var ScrapeController,
                             __('pagination detected');
                             // need to grab the pagination only once, so lets make sure any pages are 
                             for( var x = 0; x < nextPage.length; x++ ) {
-                                var href = self.formatURL( nextPage[ x ].attribs.href , true, false, 'flowers' );
+                                var href = self.formatURL( nextPage[ x ].attribs.href , true, false, pageURLtypes[ cur ] );
                                 // only inject if it's not there aleady
                                 if( -1 === pageURLs.indexOf( href ) &&  // if it's not in the list already 
                                     -1 === href.indexOf( 'page=1' )) { // and it's not the first page in the pagination (since we hit the first page first, this is never relevant)
@@ -180,42 +207,46 @@ var ScrapeController,
                 listingType = 'flower';
             }
 
-            switch( listingType ) {
-                case "flower":
-                    for( var i = 0; i < menuRows.length; i++ ) {
-                        //console.log( 'processing column ' + i );
+/*            switch( listingType ) {
+                case "flower":*/
+            for( var i = 0; i < menuRows.length; i++ ) {
+                //console.log( 'processing column ' + i );
 
-                        // get nodes
-                        var nodeGroup       = {};
-                        nodeGroup.titleNode = $( 'h5 a',   menuRows[ i ] );
-                        nodeGroup.stats     = $( '.stats .stat', menuRows[ i ] );
-                        
-                        // parse data
-                        PriceModel     = {};
-                        PriceModel.t   = nodeGroup.titleNode.children[ 0 ].raw,
-                        PriceModel.n   = '', // to be processed later
-                        PriceModel.s   = 2,
-                        PriceModel.ty  = listingType,
-                        PriceModel.cr  = new Date();
-                        PriceModel.ps  = [];
+                // get nodes
+                var nodeGroup       = {};
+                nodeGroup.titleNode = $( 'h5 a',   menuRows[ i ] );
+                try {
+                    nodeGroup.stats = $( '.stats .stat', menuRows[ i ] );
+                } catch( e ) {
+                    __('could not parse data for row');
+                    return false;
+                }
+                // parse data
+                PriceModel     = {};
+                PriceModel.t   = nodeGroup.titleNode.children[ 0 ].raw,
+                PriceModel.n   = '', // to be processed later
+                PriceModel.s   = 2,
+                PriceModel.ty  = pageURLtypes[ cur ],
+                PriceModel.cr  = new Date();
+                PriceModel.ps  = [];
 
-                        for( var z = 0; z < nodeGroup.stats.length; z++ ) {
-                            var value = nodeGroup.stats[ z ].children[ 0 ].children[ 0 ],
-                                key   = nodeGroup.stats[ z ].children[ 1 ].children[ 0 ];
-                            // this is the price section
-                            if( value.raw.indexOf( 'span class' ) > -1 ) {
-                                var prices      = {};
-                                prices.u = helpers.trim( nodeGroup.stats[ z ].children[ 1 ].children[ 0 ].raw );
-                                prices.p = helpers.trim( nodeGroup.stats[ z ].children[ 0 ].children[ 1 ].raw );
-                                PriceModel.ps.push( prices );
-                            }
-                        }
-                        summary.items_parsed++;
-                        self.save( PriceModel );
+                for( var z = 0; z < nodeGroup.stats.length; z++ ) {
+                    var value = nodeGroup.stats[ z ].children[ 0 ].children[ 0 ],
+                        key   = nodeGroup.stats[ z ].children[ 1 ].children[ 0 ];
+                    // this is the price section
+                    if( value.raw.indexOf( 'span class' ) > -1 ) {
+                        var prices      = {};
+                        prices.u = helpers.trim( nodeGroup.stats[ z ].children[ 1 ].children[ 0 ].raw );
+                        prices.p = helpers.trim( nodeGroup.stats[ z ].children[ 0 ].children[ 1 ].raw );
+                        PriceModel.ps.push( prices );
                     }
-                break;
+                }
+                summary.items_parsed++;
+                self.save( PriceModel );
             }
-            return true;
+/*                break;
+            }
+*/            return true;
         }, 
 
         save: function( data ) {
@@ -259,13 +290,23 @@ var ScrapeController,
                 url  = '';
             if( true === addTail ) {
                 switch( schema ) {
-                    //Topicals
-                    //Accessories
+                    case 'seeds_clones':
+                        tail = ( false === addTail ) ? '' : '/menu.html?type_name=Seeds+%26+Clones';
+                    break;
+                    case 'topicals':
+                        tail = ( false === addTail ) ? '' : '/menu.html?type_name=Topicals';
+                    break;
+                    case 'accessories':
+                        tail = ( false === addTail ) ? '' : '/menu.html?type_name=Accessories';
+                    break;
                     case 'concentrates':
                         tail = ( false === addTail ) ? '' : '/menu.html?type_name=Concentrates';
                     break;
                     case 'edibles':
                         tail = ( false === addTail ) ? '' : '/menu.html?type_name=Edibles';
+                    break;
+                    case 'prerolls':
+                        tail = ( false === addTail ) ? '' : '/menu.html?type_name=Pre+Rolls';
                     break;
                     case "flowers":
                     default:
@@ -273,7 +314,7 @@ var ScrapeController,
                     break;
                 }  
             }
-                      
+
             if( true === absolutePath ) {
                 url += config.setting( 'stickyguide' );
             }
