@@ -14,6 +14,7 @@ var nodeio  = require( 'node.io' ),
     base    = require( '../../lib/com/ganjazoid/ParserBaseClass' ),
     config  = require( '../../app/configs' ),
     __      = console.log,
+    ___     = process.stdout.write,
     scope   = {},
     summary = {},
     payloads = {},
@@ -46,7 +47,7 @@ var nodeio  = require( 'node.io' ),
       getMenu: function() {
           var self = this,
               curURL = siteURL + urls[ payloads.cur( 'leafly_dispensary_urls' ) ].url+'/menu';
-          __( 'fetching ', curURL );
+          __( '\nfetching ', curURL );
           __( 'payload '.red, payloads.cur( 'leafly_dispensary_urls' ) )
           __( 'total '.green, payloads.total( 'leafly_dispensary_urls' ) )
           scope.getHtml( curURL, function( err, $ ) {
@@ -74,12 +75,12 @@ var nodeio  = require( 'node.io' ),
                         unit, 
                         value,
                         price = {
-                          title: null,
-                          type: title,
-                          source: 'leafly',
-                          prices: [],
-                          meta: [],
-                          createdAt: new Date()
+                          t: null,
+                          n: '',
+                          ty: title.toLowerCase(),
+                          s: config.setting( 'constants' ).LEAFLY,
+                          ps: [],
+                          cr: new Date()
                         }
 
                     try {
@@ -91,37 +92,39 @@ var nodeio  = require( 'node.io' ),
                     try {
                       strainName = _value.children[1].children[0].children[0].children[0].children[0].raw;
                     } catch( e ) {
-                      /*__( e );*/
+                      strainName = '';
                     }
 
-                    price.title = strainName;
+                    price.t = strainName;
 
                     try {
                       pieces = $( 'dl', prices );
                     } catch( e ) {
-                      /*__( e );*/
-                      pieces = null;
+                      pieces = '';
                     }
 
                     if( pieces ) {
+                      process.stdout.write( '.'.green );
                       _.each( pieces, function( __value, __i, __object ) {
                         try {
                           var unitPrice = { 
-                              price: __value.children[0].children[0].raw.replace( '$', '' ),
-                              unit: __value.children[1].children[0].raw,
-                              denotion: 'US'
+                              p: __value.children[0].children[0].raw.replace( '$', '' ),
+                              u: __value.children[1].children[0].raw
                           }
-                          price.prices.push( unitPrice );
+                          price.ps.push( unitPrice );
                         } catch( e ) {
-                          /*__( 'could not save price'.red, e );*/
+
                         }
                       });
 
-                      self.getModel( 'price' ).create( price, function( err, doc ) {
+                      self.getModel( 'items' ).create( price, function( err, doc ) {
                         if( err ) {
-                          /*__( 'err', err );*/
-                        } else {}
+                        } else {
+
+                        }
                       });
+                    } else {
+                      process.stdout.write( '.'.red );
                     }
                   });
                 }
@@ -156,7 +159,7 @@ exports.job = new nodeio.Job({
     });
     try {
       __( 'init' );
-      scraper.init( [ 'leafly_dispensary_urls', 'price' ], 'start', process.argv );
+      scraper.init( [ 'leafly_dispensary_urls', 'items' ], 'start', process.argv );
     } catch( e ) {
       __( 'error', e );
     }

@@ -225,7 +225,7 @@ var ScrapeController,
                 PriceModel     = {};
                 PriceModel.t   = nodeGroup.titleNode.children[ 0 ].raw,
                 PriceModel.n   = '', // to be processed later
-                PriceModel.s   = 2,
+                PriceModel.s   = config.setting( 'constants' ).STICKYGUIDE,
                 PriceModel.ty  = pageURLtypes[ cur ],
                 PriceModel.cr  = new Date();
                 PriceModel.ps  = [];

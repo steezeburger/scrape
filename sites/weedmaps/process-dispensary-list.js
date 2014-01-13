@@ -44,7 +44,7 @@ var nodeio  = require( 'node.io' ),
 
         payloads = new self.loader();
         payloads.init( 'weedmaps_dispensary_urls' );
-        payloads.init( 'prices' );
+        payloads.init( 'items' );
         self.getCollection();
 
       },
@@ -95,7 +95,7 @@ var nodeio  = require( 'node.io' ),
             payloads.tick( 'weedmaps_dispensary_urls' );
             return self.pillage();
           }
-          payloads.set( 'prices', ( payloads.cur( 'prices' ) + (items.length-1) ) );
+          payloads.set( 'items', ( payloads.cur( 'items' ) + (items.length-1) ) );
           _.each( items, function( value, i, original ) {
             var hasData;
             try {
@@ -107,74 +107,53 @@ var nodeio  = require( 'node.io' ),
               var honeypot = JSON.parse( helpers.decodeHTML( hasData )),
                   category = value.attribs[ 'data-category-name' ],
                   price = {
-                    title: honeypot.name,
-                    source: 'weedmaps',
-                    type: category,
-                    prices: [
+                    t: honeypot.name,
+                    n: '',
+                    s: config.setting( 'constants' ).WEEDMAPS,
+                    ty: category,
+                    ps: [
                         { 
-                          price: honeypot.price_eighth,
-                          unit: "eighth"
+                          p: honeypot.price_eighth,
+                          u: "eighth"
                         },
                         { 
-                          price: honeypot.price_gram,
-                          unit: "gram"
+                          p: honeypot.price_gram,
+                          u: "gram"
                         },
                         { 
-                          price: honeypot.price_half_gram,
-                          unit: "half-gram"
+                          p: honeypot.price_half_gram,
+                          u: "half-gram"
                         },
                         { 
-                          price: honeypot.price_half_ounce,
-                          unit: "half-ounce"
+                          p: honeypot.price_half_ounce,
+                          u: "half-ounce"
                         },
                         { 
-                          price: honeypot.price_ounce,
-                          unit: "ounce"
+                          p: honeypot.price_ounce,
+                          u: "ounce"
                         },
                         { 
                           price: honeypot.price_quarter,
-                          unit: "quarter"
+                          u: "quarter"
                         },
                         { 
-                          price: honeypot.price_unit,
-                          unit: "unit"
+                          p: honeypot.price_unit,
+                          u: "unit"
                         }
                     ],
-                    meta: [
-                        {
-                          key: "updated_at",
-                          value: honeypot.updated_at
-                        },
-                        {
-                          key: "strain_id",
-                          value: honeypot.strain_id
-                        },
-                        {
-                          key: "id",
-                          value: honeypot.id
-                        },
-                        {
-                          key: "image",
-                          value: honeypot.image.url
-                        },
-                        {
-                          key: "dispensary_id",
-                          value: honeypot.dispensary_id
-                        }
-                    ],
-                    createdAt: new Date()
+                    ca: new Date()
                   };
-                  self.getModel( 'price' ).create( price, function( err, savedItem ) {
+                  self.getModel( 'items' ).create( price, function( err, savedItem ) {
                     if( err ) {
                       __( 'save error'.red , err );
                       summary.errors++;
                     } else {
                       summary.menu_items++;
                     }
-                    payloads.tick( 'prices' );
+                    payloads.tick( 'items' );
                   });
             } else {
-              payloads.tick( 'prices' );
+              payloads.tick( 'items' );
             }         
           });
 
@@ -187,7 +166,7 @@ var nodeio  = require( 'node.io' ),
           } else {
             summary.dispensaries_processed++;
             __( 'dispensary payload'.green, payloads.cur( 'weedmaps_dispensary_urls' ), payloads.total( 'weedmaps_dispensary_urls' ) );
-            __( 'price payload'.yellow,     payloads.cur( 'prices' ),                   payloads.total( 'prices' ) );
+            __( 'price payload'.yellow,     payloads.cur( 'items' ),                   payloads.total( 'items' ) );
             self.pillage();
           }
         });
@@ -208,7 +187,7 @@ exports.job = new nodeio.Job({
             scope.emit( msg  );
         });
         try { 
-          dispensaryCrawler.init( [ 'weedmaps_dispensary_urls', 'price' ], 'start', process.argv );
+          dispensaryCrawler.init( [ 'weedmaps_dispensary_urls', 'items' ], 'start', process.argv );
         } catch( e ) {
           __( e );
         }
