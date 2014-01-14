@@ -24,4 +24,4 @@ exports.setting = function ( key, value ) {
 	} else {
 		return Config.get( key );
 	}
-};
+};	

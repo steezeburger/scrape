@@ -24,7 +24,8 @@ var nodeio  = require( '../node_modules/node.io' ),
     siteSchema = {
         stickyguide: { list: 'stickyguide_dispensary',   id: 1 },
         leafly:      { list: 'leafly_dispensary_urls',   id: 2 },
-        weedmaps:    { list: 'weedmaps_dispensary_urls', id: 3 }
+        weedmaps:    { list: 'weedmaps_dispensary_urls', id: 3 },
+        cleaner:     { list: 'items',                    id: false }
     }
     batchSize = 1000;
     count   = 0,

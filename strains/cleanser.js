@@ -40,9 +40,9 @@ var _       = require( 'underscore' ),
         start: function() {
             var self   = this,
                 model  = self.getModel( 'items' );
-                start  = self.startAt || -1;
-                limit  = self.limitTo || limitDefault;
-                end    = self.endAt   || null;
+                start  = parseInt(self.startAt) || -1;
+                limit  = parseInt(self.batch)   || limitDefault;
+                end    = parseInt(self.endAt)   || null;
 
             if( self.clean ) {
                 self.toiletpaper( start, [{t:self.clean}] );
@@ -61,7 +61,7 @@ var _       = require( 'underscore' ),
                         }
             ).count().exec(function( err, count ) {
                 __( 'records to process', count );
-                batchPayload = count;
+                batchPayload = ( end ) ? end : count;
                 initLoadCount++;
                 self.checkForInitComplete();
             });
@@ -92,9 +92,12 @@ var _       = require( 'underscore' ),
             var self = this,
                 model  = self.getModel( 'items' );
             if( start ) {
-                cur = start;
+                cur = parseInt(start);
+                __( 'start ', cur );
             } else {
-                cur += limit;
+                cur = cur + limit;
+                __( 'limit ',parseInt(limit) );
+                __( 'adding  ', cur );
             }
             return model.find({
                 ty: {
@@ -104,14 +107,12 @@ var _       = require( 'underscore' ),
         },
         toiletpaper: function( start, docs ) {
             var self = this;
-            __('queue place'.white, cur );
-            __('remaining'.green, batchPayload - cur );
-            __('total'.yellow, batchPayload );
+            __('queue place'.white, cur, ' of ', batchPayload  );
+            __('remaining'.green, parseInt(batchPayload - cur) );
 
             // process docs
             if( undefined !== docs ) {
                 _.each( docs, function( v, i , o ) {
-                    __( 'analyzing ', v.t );
                     var name = v.t.toLowerCase();
                     // complex to simple
                     name = self.itemRegexRemove( name );
@@ -120,13 +121,16 @@ var _       = require( 'underscore' ),
                     name = self.trim( name );
                     
                     
-                    __( 'clean ', name );
+                    __( '@ '.yellow , v.t, name );
                     self.getModel( 'items').update(
                         { _id: v._id },
                         { n: name }, 
                         { upsert: false },
                         function( err, count ) {
-                            __( 'updated', err, count );
+                            if( err ) {
+                                __( err );
+                            };
+                            process.stdout.write( '.'.green );
                         }
                     );
                 });
