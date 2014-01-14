@@ -43,9 +43,13 @@ var _       = require( 'underscore' ),
                 start  = self.startAt || -1;
                 limit  = self.limitTo || limitDefault;
                 end    = self.endAt   || null;
-            __( 'finding');
-            self.fetchBatchSize();
-            self.getStrainLists();
+
+            if( self.clean ) {
+                self.toiletpaper( start, [{t:self.clean}] );
+            } else {
+                self.fetchBatchSize();
+                self.getStrainLists();
+            }
         },
         fetchBatchSize: function() {
             var self   = this,
@@ -77,6 +81,7 @@ var _       = require( 'underscore' ),
         },
         checkForInitComplete: function() {
             var self = this;
+
             if ( initLoadCount === initLoadPayload ) {
                 return self.toiletpaper( start, null );
             } else {
@@ -107,10 +112,10 @@ var _       = require( 'underscore' ),
             if( undefined !== docs ) {
                 _.each( docs, function( v, i , o ) {
                     __( 'analyzing ', v.t );
-                    var name = v.t;
+                    var name = v.t.toLowerCase();
                     // complex to simple
                     name = self.itemRegexRemove( name );
-                    name = self.removeDelimitedContent( name );
+                    //name = self.removeDelimitedContent( name );
                     name = self.removeItems( name );
                     name = self.trim( name );
                     
@@ -223,11 +228,17 @@ var _       = require( 'underscore' ),
                 },
                 {
                     original: 'grandaddy purple',
-                    synonyms: {
+                    synonyms: [
                         /gdp/gi,
                         /grandaddy purps/gi,
                         /purps/gi,
-                    }
+                    ]
+                },
+                {
+                    original: ' ',
+                    synonyms: [
+                        /\s{2,}/gi // two or more spaces
+                    ]
                 }
             ];
             _.each( normalized, function( v, i, o ) {
@@ -258,16 +269,15 @@ var _       = require( 'underscore' ),
                     /\(+([^*]*)\)+/gi,                               // ( delimiter )
                     /\{+([^*]*)\}+/gi,                               // { delimiter }
                     /\d+(g){0,1}(gs){0,1}\s+for/gi,                  // 0g(s) for
-                    /\d+\.{0,1}\d{0,1}\s+gram(s){0,1}|eighth(s){0,1}|quarter(s){0,1}|qtr(s){0,1}|ounce(s){0,1}|gr(s){0,1}\s+for/gi
+                    /\d+\.{0,1}\d{0,1}\s+gram(s){0,1}|eighth(s){0,1}|quarter(s){0,1}|qtr(s){0,1}|ounce(s){0,1}|gr(s){0,1}\s+for/gi,
                     /\s+\d+g\s+/gi,                                  // things like 10g, 5g, .5g
                     /\d+g\s{0,1}[@]{1}\s{0,1}\d/gi,                  // 2g@30
                     /8th(s){0,1}/gi,                                 // 8th or 8ths
                     /\d+g\/8th/,                                     // 4g/8th
                     /\d+g(s){0,1}\s+for\s+[$]{0,1}\d+/gi,            // 2g for $30
                     /\d+\s{0,1}gram\s{0,1}[@]/gi,                    // 3 gram @
-                    /\s+([^*]*)\/([^*]*)\([^*]*)\s+/gi,              // gets " contennt/between/shit "
+                    /\s+([^*]*)\/([^*]*)\/([^*]*)\s+/gi,              // gets " contennt/between/shit "
                     /\d+g\s{0,1}[@]{1}\s{0,1}\d/gi,                  // another 2g for x dollars
-                    /\s{2,}/gi,                                      // two or more spaces
                     /\.+/gi,                                          // remove .
                     /[◆]+/gi,
                     /[!]+/gi,                    
@@ -296,7 +306,12 @@ var _       = require( 'underscore' ),
     cleanser.listen( cleanser.constants.COMPLETE, function() {
       process.exit( 0 );
     });
-    cleanser.init( [ 'items', 'leafly_strains', 'seedfinder_strains' ], 'start', process.argv );
+
+    try {
+        cleanser.init( [ 'items', 'leafly_strains', 'seedfinder_strains' ], 'start', process.argv );
+    } catch( e ) {
+        __( e );
+    }
 
 /*
 // gets ride of parenthesis and contents
