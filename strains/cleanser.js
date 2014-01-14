@@ -151,26 +151,6 @@ var _       = require( 'underscore' ),
         /* CLEANSING FUNCTIONS */
         /***********************/
 
-        removeDelimitedContent: function( perp ) {
-            var self = this;
-            var delimiters = [
-                '!', '"', '-', '--',                                    // singular delimeters 
-                ['\[','\]'], ['\(','\)'], ['||','||'], ['|','|']        // enclosing delimiters
-            ];
-            _.each( delimiters, function( v, i , o ) {
-                if( typeof(v) === 'string' ) {
-                    if( perp.match( v + '(.*?)' + v ) ) {
-                        __( 'removeDelimitedContent', v );
-                    }
-                } else if ( typeof( v ) === 'array' ) {
-                    if( perp.indexOf( v[ 0 ] ) > -1 && perp.indexOf( v[ 1 ] ) > -1 ) {
-                        __( 'removeDelimitedContent', v );
-                    }
-                }
-            });
-
-            return perp;
-        },
         removeItems: function( perp ) {
             var self = this;
             perp = perp.toLowerCase();
@@ -184,6 +164,7 @@ var _       = require( 'underscore' ),
                 '1/2',
                 '1/4',
                 '1/8th',
+                /*'8th',*/
                 '1/8',
                 '1/2',
                 'ounce',
@@ -192,23 +173,27 @@ var _       = require( 'underscore' ),
                 'thc-a',
                 'thca',
                 'thc',
+                'on special',
+                'private reserve',
+                'special',
+                'exclusive',
+                'top-shelf',
+                'top shelf',
+                'bottom-shelf',
+                'bottom shelf',
+                'medium-shelf',
+                'medium shelf',
+                'free gram',
+                'this week only',
+                'exclusive',
+                'new vendor item',
+                'buy one get 1 free',
+                'buy one get one free',
+                'buy 1 get 1 free',
+                'buy 1 get one free',
                 'cbd'
             ]
-            var bullshitCharacters = [
-                '◆',
-                '~',
-                '!',
-                '#',
-                ':',
-                '$'
-            ]
             _.each( bullshitWords, function( v, i, o ) {
-                if( perp.indexOf( v ) > -1 ) {
-                    __( 'removing', v );
-                    perp = perp.replace( v, '' );
-                }
-            });
-            _.each( bullshitCharacters, function( v, i, o ) {
                 if( perp.indexOf( v ) > -1 ) {
                     __( 'removing', v );
                     perp = perp.replace( v, '' );
@@ -217,39 +202,81 @@ var _       = require( 'underscore' ),
             return perp;
         },
 
-        removeContentSides: function() {
-            var self = this;
+        smartSelect: function( perp ) {
+
         },
         
         itemReplace: function( perp ) {
             var self = this;
-/*            var normalized = [
+            var normalized = [
                 { 
                     original: ' og ', 
                     synonyms:[
-                        /\so\.g\.\s/gi
+                        /\s+o\.{1}g\.{0,1}\s+/gi // matches o.g. o.g
                     ]
+                },
+                {
+                    original: '\'',
+                    synonyms: [
+                        '&x27;'
+                    ]
+                },
+                {
+                    original: 'grandaddy purple',
+                    synonyms: {
+                        /gdp/gi,
+                        /grandaddy purps/gi,
+                        /purps/gi,
+                    }
                 }
             ];
             _.each( normalized, function( v, i, o ) {
+                var masterValue = v.original;
                 _.each( v.synonyms, function( _v, _i , _o ) {
-
+                    if( typeof( _v ) === 'object' ) {       // it's a regexp
+                        if( _v.test( perp ) ) {
+                            perp = perp.replace( _v, masterValue );
+                        }
+                    } else {                            // string comp
+                        if( perp.indexOf( _v ) > -1 ) {
+                            perp = perp.replace( _v, masterValue );
+                        }
+                    }
                 });
-                if( perp === v.original ) {
-
-                }
             });
-            return perp;*/
-        },
+            return perp;
+        }, 
 
         itemRegexRemove: function( perp ) {
             var self = this,
                 exes = [
-                    /[0-9]*\.?[0-9]+%/gi,                             // percentage 00.00%
-                    /\$[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?/gi,      // currency
-                    /\*+([^*]*)\*+/gi,                                    // * delimiter *
-                    /\[+([^*]*)\]+/gi,
-                    /\(+([^*]*)\)+/gi                                    // ( delimiter )
+                    /[0-9]*\.?[0-9]+%/gi,                            // percentage 00.00%
+                    /\$[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?/gi,  // currency
+                    /\*+([^*]*)\*+/gi,                               // * delimiter *
+                    /\[+([^*]*)\]+/gi,                               // [] del
+                    /\-+([^*]*)\-+/gi,                               // - delimiter -
+                    /\(+([^*]*)\)+/gi,                               // ( delimiter )
+                    /\{+([^*]*)\}+/gi,                               // { delimiter }
+                    /\d+(g){0,1}(gs){0,1}\s+for/gi,                  // 0g(s) for
+                    /\d+\.{0,1}\d{0,1}\s+gram(s){0,1}|eighth(s){0,1}|quarter(s){0,1}|qtr(s){0,1}|ounce(s){0,1}|gr(s){0,1}\s+for/gi
+                    /\s+\d+g\s+/gi,                                  // things like 10g, 5g, .5g
+                    /\d+g\s{0,1}[@]{1}\s{0,1}\d/gi,                  // 2g@30
+                    /8th(s){0,1}/gi,                                 // 8th or 8ths
+                    /\d+g\/8th/,                                     // 4g/8th
+                    /\d+g(s){0,1}\s+for\s+[$]{0,1}\d+/gi,            // 2g for $30
+                    /\d+\s{0,1}gram\s{0,1}[@]/gi,                    // 3 gram @
+                    /\s+([^*]*)\/([^*]*)\([^*]*)\s+/gi,              // gets " contennt/between/shit "
+                    /\d+g\s{0,1}[@]{1}\s{0,1}\d/gi,                  // another 2g for x dollars
+                    /\s{2,}/gi,                                      // two or more spaces
+                    /\.+/gi,                                          // remove .
+                    /[◆]+/gi,
+                    /[!]+/gi,                    
+                    /[~]+/gi,
+                    /[!]+/gi,
+                    /[#]{2,}/gi,
+                    /[:]+/gi,
+                    /[-]+/gi,
+                    /[$]+/gi
                 ];
             _.each( exes, function( v, i ,o ) {
                 var rx = new RegExp( v );

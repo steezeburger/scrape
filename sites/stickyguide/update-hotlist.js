@@ -104,7 +104,6 @@ var ScrapeController,
                             pageURLtypes.push( v );
                         });
                     }
-
                     limit = ( self.endAt ) ? self.endAt : pageURLs.length; // 1 to test
                     self.getListing();
                 }
@@ -127,7 +126,7 @@ var ScrapeController,
 
                 __( '@ url: '.yellow.underline, ( url ) ? url : pageURLs[ cur ] );
                 __( '@ at: '.bold, parseInt(cur)+1 );
-                __( '@ total: '.green, pageURLs.length );
+                __( '@ total: '.green, limit );
 
                 // get the page
                 var whichUrl = ( url ) ? url : pageURLs[ cur ];                    
@@ -175,7 +174,7 @@ var ScrapeController,
                                     -1 === href.indexOf( 'page=1' )) { // and it's not the first page in the pagination (since we hit the first page first, this is never relevant)
                                     __( 'not in list', href );
                                     pageURLs.splice( cur + 1, 0, href );
-                                    limit = pageURLs.length;
+                                    limit++;
                                 } else {
                                     __( 'already in list', href );
                                 }
