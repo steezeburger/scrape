@@ -57,7 +57,8 @@ var _       = require( 'underscore' ),
             model.find({
                             ty: {
                                 $in: [ "flower", "Indica", "Sativa", "Hybrid" ]
-                            }
+                            },
+                            n:""
                         }
             ).count().exec(function( err, count ) {
                 __( 'records to process', count );
@@ -102,7 +103,8 @@ var _       = require( 'underscore' ),
             return model.find({
                 ty: {
                     $in: [ "flower", "Indica", "Sativa", "Hybrid" ]
-                }
+                },
+                n: ''
             }).skip( cur ).limit( limit );
         },
         toiletpaper: function( start, docs ) {

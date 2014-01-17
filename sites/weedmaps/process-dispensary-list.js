@@ -57,7 +57,8 @@ var nodeio  = require( 'node.io' ),
           }
           dispensaries = collection;
           __( '@@ queued '.green, dispensaries.length );
-          var maxVal = ( self.endAt && self.endAt <= dispensaries.length ) ? self.endAt : dispensaries.length;
+          var maxVal = ( self.endAt && self.endAt < dispensaries.length ) ? self.endAt : dispensaries.length - 1;
+          __( '@@ maxval '.green, maxVal );
           payloads.set( 'weedmaps_dispensary_urls', maxVal );
           self.pillage();
         });
@@ -85,6 +86,7 @@ var nodeio  = require( 'node.io' ),
           /*__( 'payloads.cur', payloads.cur( 'weedmaps_dispensary_urls' ) );*/
           curIndex = payloads.cur( 'weedmaps_dispensary_urls' );
         }
+        __( 'fetching '.yellow, dispensaries[ curIndex ], 'cur ', curIndex );
         scope.getHtml( self.formatURL( dispensaries[ curIndex ].url, true ), function( err, $ ) {  
           var items;
           try {
@@ -167,7 +169,9 @@ var nodeio  = require( 'node.io' ),
             summary.dispensaries_processed++;
             __( 'dispensary payload'.green, payloads.cur( 'weedmaps_dispensary_urls' ), payloads.total( 'weedmaps_dispensary_urls' ) );
             __( 'price payload'.yellow,     payloads.cur( 'items' ),                   payloads.total( 'items' ) );
-            self.pillage();
+            setTimeout( function() {
+              self.pillage();
+            }, 3000);
           }
         });
       }
