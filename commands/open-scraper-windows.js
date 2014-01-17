@@ -49,7 +49,7 @@ var nodeio  = require( '../node_modules/node.io' ),
                 if( err ) {
                     __( 'err', err );
                 }
-                count = ( self.whichSite === 'stickyguide' ) ? docs.length * 7 : docs.length;
+                count = ( self.whichSite === 'stickyguide' ) ? docs.length * 7 : docs.length - 1;
                 self.printCount( count );
             });
         },

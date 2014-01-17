@@ -6,6 +6,7 @@ configuration.prototype = {
 		STICKYGUIDE: 1,
 		LEAFLY: 	 2,
 		WEEDMAPS:    3,
+		SCRAPETIMEOUT: 120
 	},
 	set: function( key, value ) {
 		this[ key ] = value;

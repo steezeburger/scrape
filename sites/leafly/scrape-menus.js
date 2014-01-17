@@ -38,7 +38,7 @@ var nodeio  = require( 'node.io' ),
           
           __( docs.length );
 
-          payloads.set( 'leafly_dispensary_urls', docs.length );
+          payloads.set( 'leafly_dispensary_urls', docs.length - 1 );
           urls = docs;
           self.getMenu();
         });

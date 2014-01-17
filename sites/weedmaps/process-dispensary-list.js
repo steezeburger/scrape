@@ -21,6 +21,9 @@ var nodeio  = require( 'node.io' ),
     summary       = {},
     payloads      = {},
     dispensaries  = [],
+    retryList     = [],
+    returnCount   = 0,
+    returnMax     = 2,
     offset        = null,
     selector      = '.menu_item';
 
@@ -92,10 +95,19 @@ var nodeio  = require( 'node.io' ),
           try {
             items = $( selector );
           } catch( e ) {
+            // something barfed, so lets count it as complete, add it to a retry list
             __( 'error: '.red, e );
             summary.errors++;
+            retryList.push( dispensaries[ curIndex ] );
             payloads.tick( 'weedmaps_dispensary_urls' );
-            return self.pillage();
+            // if we're at the end, pass off the shit
+            if( payloads.met( 'weedmaps_dispensary_urls' ) ) {
+              return self.endSequece();
+            } else {
+              return setTimeout( function() {
+                self.pillage();
+              }, 3000);
+            }
           }
           payloads.set( 'items', ( payloads.cur( 'items' ) + (items.length-1) ) );
           _.each( items, function( value, i, original ) {
@@ -163,17 +175,41 @@ var nodeio  = require( 'node.io' ),
           payloads.tick( 'weedmaps_dispensary_urls' );
           // end it?
           if( payloads.met( 'weedmaps_dispensary_urls' ) /*&& payloads.met( 'prices' )*/ ) {
-            summary.time_elapsed = new Date();
-            self.endProcess( summary );
+            self.endSequece();
           } else {
             summary.dispensaries_processed++;
             __( 'dispensary payload'.green, payloads.cur( 'weedmaps_dispensary_urls' ), payloads.total( 'weedmaps_dispensary_urls' ) );
-            __( 'price payload'.yellow,     payloads.cur( 'items' ),                   payloads.total( 'items' ) );
+            __( 'price payload'.yellow,     payloads.cur( 'items' ),                    payloads.total( 'items' ) );
             setTimeout( function() {
               self.pillage();
             }, 3000);
           }
         });
+      },
+      endSequece: function() {
+        var self = this;
+        summary.time_elapsed = new Date();
+        if( retryList.length ) {
+          returnCount++;
+          
+          __( 'retrying list: ' + retryList.length );
+          
+          dispensaries = retryList;
+          payloads.init( 'weedmaps_dispensary_urls' );
+          payloads.set( 'weedmaps_dispensary_urls', retryList.length - 1 );          
+          retryList = [];
+
+          if( returnCount < returnMax) {
+            setTimeout( function() {
+              self.pillage();
+            }, 3000);
+          } else {
+            self.endProcess( summary );  
+          }
+          
+        } else {
+          self.endProcess( summary );
+        }
       }
     };
 

@@ -59,7 +59,7 @@ var nodeio          = require( 'node.io' ),
             payloads.dispensaries.expecting = 0;
 
             __( 'start' );
-            var fullList        = [];
+            var fullList = [];
             // get starting HTML
             scope.getHtml( startURL, function( err, $ ) {
                 _.each( selectors.regionNav, function( value, iterator, object ) {
