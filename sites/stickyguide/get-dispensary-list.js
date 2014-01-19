@@ -5,6 +5,7 @@ var nodeio      = require( 'node.io'          ),
     __          = console.log,
     mongoose    = require( 'mongoose'         ),
     schemas     = require( '../../app/schema' ),
+    schemas     = require( '../../lib/com/ganjazoid/ParserBaseClass' ),
     validator   = require( '../../lib/com/ganjazoid/ValidatorBase' );
 
 // CONST

@@ -40,48 +40,49 @@ var nodeio  = require( 'node.io' ),
         payloads.init( 'master_file' );
 
         __( 'requesting master file', startURL );
-        fs.readFile('cache/leaflyMasterList.json', function (err, data) {
+        
+        __( 'cache file not used' );
+        /*fs.readFile('cache/leaflyMasterList.json', function (err, data) {
           if (err) {
             throw err;
           }
-
+*/
 /*        });*/
-        /*request( startURL, function (error, response, body) {*/
+        request( startURL, function ( error, response, data ) {
           try {
             /*var lastCache = fs.writeFile('../../cache/leaflyMasterList.json', data, function (err) {
               if (err) throw err;
               console.log('It\'s saved!');
             });*/
-            var dataFile = JSON.parse( data.toString() );
-            __( 'LEN',dataFile.Results.length);
+            var dataFile = JSON.parse( data );
+            __( 'How many do we find? ',dataFile.Results.length);
             _.each(dataFile.Results, function( value, i, object) {
               // first lets try to parse the address
-              __( '@@ NAME: ' );
+              /*__( '@@ NAME: ' );
               __( value.Name );
               __( '@@ ADDRESS: ' );
               __( value.Address1 );
               __( value.City );
               __( value.State );
               __( value.Zip );
-              __( value.UrlName );
-              __( value.LastMenuUpdate );
+              __( value.UrlName );*/
               var address2 = ( value.Address2 ) ? value.Address2.toLowerCase() : '';
               var store =  {
                   title: value.Name.toLowerCase(),
                   addressRaw: '',
                   address: {
-                      street:         ( value.Address1 ) ? value.Address1.toLowerCase() : '',
-                      city:           ( value.City ) ? value.City.toLowerCase() : '',
-                      state:          ( value.State ) ? value.State.toLowerCase() : '',
-                      zipcode:        ( value.Zip ) ? value.Zip.toLowerCase() : '',
-                      lastMenuUpdate: ( value.LastMenuUpdate ) ? value.LastMenuUpdate.toLowerCase() : '',
+                      street:  ( value.Address1 ) ? value.Address1.toLowerCase() : '',
+                      city:    ( value.City )     ? value.City.toLowerCase()     : '',
+                      state:   ( value.State )    ? value.State.toLowerCase()    : '',
+                      zipcode: ( value.Zip )      ? value.Zip.toLowerCase()      : ''
                   },
                   urls: [
                     { 
                       siteId: config.setting( 'constants' ).LEAFLY,
                       slug:   value.UrlName
                     } // we'll add more if there are more later
-                  ]
+                  ],
+                  lastMenuUpdate: ( value.LastMenuUpdate ) ? self.extractDate( value.LastMenuUpdate ) : new Date( '1980-01-01:00:00:00' )
               }
 
               // lets see if it's alreay there 
@@ -99,42 +100,42 @@ var nodeio  = require( 'node.io' ),
                     { lastMenuUpdate: docs[ 0 ].lastMenuUpdate },
                     { upsert: false },
                     function ( err, count ) {
-                      if( err ) throw err;
-                      __('updated', count);
+                      if( err ) {
+                          throw err;
+                      } else {
+                          __('updated', count);
+                      }
                     }
                   );
                 } else {
-                  self.getModel( 'stores' ).create( store, function( err, count ) {
+                  self.getModel( 'stores' ).create( store, function( err, document ) {
                     if( err ) throw err;
-                    __('saved', count);
+                    __('saved', document);
                   });
                 }
               });
-
-              /*var dispensary = null;
-              dispensary = {
-                title: value.Name.toLowerCase(),
-              };
-              if( dispensary ) {
-                self.getModel( 'stores' ).update(
-                  {
-                    title: dispensary.title.toLowerCase(),
-                  },
-                  dispensary,
-                  { upsert: true },
-                  function( err, document ) {
-                    if( err ) {
-                      __( 'error adding dispensary' );
-                    }
-                    __( 'added dispensary' );
-                  }
-                );
-              }*/
             });
           } catch( e ) {
             __( e );
           }
         });
+      },
+      extractDate: function( date ) {
+        var self = this;
+        date = date.replace(/\//g, '');
+        var freshDate = eval( 'new ' + date );
+        if( self.validDate( freshDate ) ) {
+          return freshDate;
+        } else {
+          return new Date('1980-01-01:00:00:00');
+        }
+      },
+      validDate: function( d ) {
+        var self = this;
+        if ( Object.prototype.toString.call( d ) !== "[object Date]" ) {
+          return false;
+        }
+        return !isNaN(d.getTime());
       }
     }
 

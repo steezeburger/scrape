@@ -71,7 +71,8 @@ exports.get = function( which ) {
                         siteId: Number,
                         slug: String
                     }
-                ]
+                ],
+                lastMenuUpdate: Date
             }
         break;
         case 'items':               // new version of prices
