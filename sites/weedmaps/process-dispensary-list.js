@@ -89,7 +89,9 @@ var nodeio  = require( 'node.io' ),
           /*__( 'payloads.cur', payloads.cur( 'weedmaps_dispensary_urls' ) );*/
           curIndex = payloads.cur( 'weedmaps_dispensary_urls' );
         }
-        __( 'fetching '.yellow, dispensaries[ curIndex ], 'cur ', curIndex );
+        __( 'fetching '.yellow, dispensaries[ curIndex ].url);
+        __( 'current index:'.blue, curIndex );
+        
         scope.getHtml( self.formatURL( dispensaries[ curIndex ].url, true ), function( err, $ ) {  
           var items;
           try {

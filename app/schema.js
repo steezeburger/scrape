@@ -56,6 +56,18 @@ exports.get = function( which ) {
                 url: String
             }
         break;
+        case 'store':
+            schema = {
+                title: String,
+                addressRaw: String,
+                address: {
+                    street: String,
+                    city: String,
+                    state: String
+                    zipcode: String
+                }
+            }
+        break;
         case 'items':               // new version of prices
             schema = {
                 t:  String,         // title

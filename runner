@@ -1,3 +1,31 @@
+:: :: COMMANDS:
+
+:: Gets a list of states, cause that's how we get a natural list of states from an entrypoint
 node.io sites/stickyguide/get-state-list
+	@ params start, end
+
+:: Gets a dispensary list per region, in this case, by state
 node.io sites/stickyguide/get-dispensary-list
+	@ params start, end
+
+:: Runs through dispensary collection 
 node.io sites/stickyguide/update-hotlist
+	@ params start, end
+
+
+
+:: Runs through leafly dispensary collection
+node.io sites/leafly/scrape-menus
+	@ params N/A
+
+
+
+:: Runs through weedmaps dispenary list
+node.io sites/weedmaps/process-dispensary-list
+	@ params start, end
+
+:: Runs through weedmaps region list (nav)
+node.io sites/weedmaps/process-dispensary-list
+	@ params start, end
+
+	
