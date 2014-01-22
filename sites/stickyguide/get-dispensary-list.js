@@ -3,9 +3,9 @@ var nodeio      = require( 'node.io'          ),
     request     = require( 'request'          ),
     _           = require( 'underscore'       ),
     __          = console.log,
+    config      = require( '../../app/configs' ),
     mongoose    = require( 'mongoose'         ),
     schemas     = require( '../../app/schema' ),
-    schemas     = require( '../../lib/com/ganjazoid/ParserBaseClass' ),
     validator   = require( '../../lib/com/ganjazoid/ValidatorBase' );
 
 // CONST
@@ -92,7 +92,6 @@ DispensaryController.prototype = {
                 __( '@ moving to store urls' );
 
                 self.saveResults();
-                
             }
         });
         return self;
@@ -136,6 +135,7 @@ DispensaryController.prototype = {
         RegionSchema        = mongoose.Schema( schemas.get( 'stickyguide_region' ) );
         SubregionSchema     = mongoose.Schema( schemas.get( 'stickyguide_subregion' ) );
         DispensarySchema    = mongoose.Schema( schemas.get( 'stickyguide_dispensary' ) );
+        StoreSchema         = mongoose.Schema( schemas.get( 'stores' ) );
         return self;
     },
 
@@ -144,6 +144,7 @@ DispensaryController.prototype = {
         RegionModel         = mongoose.model( 'stickyguide_region',     RegionSchema );
         SubregionModel      = mongoose.model( 'stickyguide_subregion',  SubregionSchema );
         DispensaryModel     = mongoose.model( 'stickyguide_dispensary', DispensarySchema );
+        StoreModel          = mongoose.model( 'stores', StoreSchema );
         return self;
     },
 
@@ -196,8 +197,89 @@ DispensaryController.prototype = {
                                         info.attribs.href )) ? info.attribs.href : '';
                     title       = info.children[ 0 ].raw;
                     address     = address_node.children[ 0 ].raw;
+                    addressCuts = address.split(/\n/g).filter(function( splitval ){
+                        return splitval !== '';
+                    });
+                    if( 5 === addressCuts.length ) {
+                        addressCuts[0] = addressCuts[0] + ' ' + addressCuts[1];
+                        var nw = addressCuts.slice(1, 2);
+                        __( 'addressCuts ', nw );
+                    }
+
                     lastUpdated = meta[ meta.length - 1 ].children[ 0 ].raw;
 
+                    var entry = {
+                        title: title,
+                        addressRaw: address,
+                        address: {
+                            street:   addressCuts[0],
+                            city:     addressCuts[1].replace(',',''),
+                            state:    addressCuts[2].replace('.',''),
+                            zipcode:  addressCuts[3]
+                        },
+                        urls: [
+                            {
+                                siteId: config.setting( 'constants' ).STICKYGUIDE,
+                                slug: url
+                            }
+                        ],
+                        lastMenuUpdate:lastUpdated
+                    }
+
+                    StoreModel.find( 
+                        { 
+                            title: entry.title, 
+                            city: entry.address.city,
+                            state: entry.address.state
+                        }, function( err, docs ) {
+                            if( err ) throw err;
+                            if( !docs.length ) {
+                                // it's not there
+                                StoreModel.create( entry, function( err, doc ) {
+                                    if( err ) throw err;
+                                    __( 'created' );
+                                });
+                            } else {
+                                // it's there, update last updated
+                                
+                                // check to see if the URL is already in the documente, if not add it
+
+                                // var isInList = _.findWhere( docs[ 0 ].urls, { slug: url } ).length;
+                                // if( isInList ) {
+
+                                // }
+
+                                StoreModel.update(
+                                    { _id: docs[ 0 ]._id },
+                                    { lastUpdated: entry.lastUpdated },
+                                    { upsert: false },
+                                    function( err, count ) {
+                                        if( err ) throw err;
+                                        __( 'updated' );
+                                    }
+                                );
+                            }
+                        }
+                    );
+                    /*
+
+            schema = {
+                title: String,
+                addressRaw: String,
+                address: {
+                    street: String,
+                    city: String,
+                    state: String,
+                    zipcode: String
+                },
+                urls: [
+                    {
+                        siteId: Number,
+                        slug: String
+                    }
+                ],
+                lastMenuUpdate: Date
+            }
                     document = {
                         url:url,
                         title:title,
@@ -240,7 +322,7 @@ DispensaryController.prototype = {
                                 });
                             }
                         }
-                    });
+                    });*/
                 });
             } else {
                 console.log( '@@ ERROR collection not found for page: ', pageData[ i ] );

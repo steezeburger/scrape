@@ -1,161 +1,354 @@
-/**
-  * @title:         Get Dispensary List
-  * @author:        Brian Kenny <papaviking@gmail.com>
-  * @version:       0.1
-  * @description:   This grabs leafy's dispensary search via their json query api. 
-  *                 
-  * @dependencies:  node.io, underscore
-  **/
+// REQUIRE
+var nodeio      = require( 'node.io'          ),
+    request     = require( 'request'          ),
+    _           = require( 'underscore'       ),
+    __          = console.log,
+    mongoose    = require( 'mongoose'         ),
+    schemas     = require( '../../app/schema' ),
+    validator   = require( '../../lib/com/ganjazoid/ValidatorBase' );
 
-var nodeio  = require( 'node.io' ),
-    _       = require( 'underscore' ),
-    fs      = require( 'fs' ),
-    request = require( 'request' ),
-    colors  = require( 'colors' ),
-    helpers = require( '../../lib/com/ganjazoid/Helpers' ),
-    base    = require( '../../lib/com/ganjazoid/ParserBaseClass' ),
-    config  = require( '../../app/configs' ),
-    __      = console.log,
-    //startURL      = 'http://www.leafly.com/finder/search?&loadfacets=true&sort=BestMatch&page=0&take=10&searchradius=1000&latitude=35.646162&longitude=-96.59375',
-    startURL      = 'http://www.leafly.com/finder/search?&loadfacets=true&sort=BestMatch&page=0&take=700&searchradius=1679&latitude=35.646162&longitude=-96.59375',
-    summary       = {},
-    payloads      = {},
-    scope         = null,
-    dispensaries  = [];
-    listCrawler   = {
-      start: function( _offset ) {
+// CONST
+var DISPENSARY_CONTROLLER_COMPLETE  = 'dispensary.list.complete',
+    DISPENSARY_CONTROLLER_ERROR     = 'dispensary.list.error',
+    PAYLOAD_LOAD                    = 'Load',
+    PAYLOAD_LOADED                  = 'Loaded',
+    PAYLOAD_COMPLETE                = 'Complete';
+
+// DYNAMIC
+var DispensaryController,
+    RegionModel, 
+    RegionSchema, 
+    SubregionSchema, 
+    SubregionModel,
+    DispensarySchema,
+    DispensaryModel,
+    db,
+    scope,
+    Validator       = validator.getInstance();
+    payloads        = [],
+    pageData        = [],
+    l               = console.log;
+
+DispensaryController = function() {
+    var self = this;
+};
+
+DispensaryController.prototype = {
+    constructor:  DispensaryController,
+    callbacks: [],
+
+    /* PROCEDURAL FUNCTIONS */
+
+    init: function() {
         var self = this;
-        summary.errors              = 0,
-        summary.critical_errors     = 0,
-        summary.success             = 0,
-        summary.time_stared         = new Date(),
-        summary.time_elapsed        = null,
-        summary.dispensaries        = 0;
 
-        if( _offset ) {
-          offset = _offset;
+        self.payloadInit( 'regions' );
+        self.payloadInit( 'dispensaries' );
+
+        self.getSchemas().getModels().connect();
+        return self;
+    },
+
+    start: function() {
+        var self = this;
+        self.getRecords();
+        return self;
+    },
+
+    analysePage: function( $ ) {
+        var self = this;
+        // starting point
+        var collection = $( '#dispensaries-list .dispensaries li' );
+        if( collection ) {
+            self.payloadTick( 'dispensaries', collection.length );
+            /*self.setPayload( 'dispensaries', ( self.getPayload( 'dispensaries' ) + collection.length ) );*/
+            return true;
         }
+        return false;
+    },
 
-        payloads = new self.loader();
-        payloads.init( 'master_file' );
+    requestPage: function( page ) {
+        var self = this;
+        console.log( '@ fetching page: ' + page );
+        // send out requests to get pages, and process them afterward.
 
-        __( 'requesting master file', startURL );
-        
-        __( 'cache file not used' );
-        /*fs.readFile('cache/leaflyMasterList.json', function (err, data) {
-          if (err) {
-            throw err;
-          }
-*/
-/*        });*/
-        request( startURL, function ( error, response, data ) {
-          try {
-            /*var lastCache = fs.writeFile('../../cache/leaflyMasterList.json', data, function (err) {
-              if (err) throw err;
-              console.log('It\'s saved!');
-            });*/
-            var dataFile = JSON.parse( data );
-            __( 'How many do we find? ',dataFile.Results.length);
-            _.each(dataFile.Results, function( value, i, object) {
-              // first lets try to parse the address
-              /*__( '@@ NAME: ' );
-              __( value.Name );
-              __( '@@ ADDRESS: ' );
-              __( value.Address1 );
-              __( value.City );
-              __( value.State );
-              __( value.Zip );
-              __( value.UrlName );*/
-              var address2 = ( value.Address2 ) ? value.Address2.toLowerCase() : '';
-              var store =  {
-                  title: value.Name.toLowerCase(),
-                  addressRaw: '',
-                  address: {
-                      street:  ( value.Address1 ) ? value.Address1.toLowerCase() : '',
-                      city:    ( value.City )     ? value.City.toLowerCase()     : '',
-                      state:   ( value.State )    ? value.State.toLowerCase()    : '',
-                      zipcode: ( value.Zip )      ? value.Zip.toLowerCase()      : ''
-                  },
-                  urls: [
-                    { 
-                      siteId: config.setting( 'constants' ).LEAFLY,
-                      slug:   value.UrlName
-                    } // we'll add more if there are more later
-                  ],
-                  lastMenuUpdate: ( value.LastMenuUpdate ) ? self.extractDate( value.LastMenuUpdate ) : new Date( '1980-01-01:00:00:00' )
-              }
+        // gets one of the regions
+        scope.getHtml( page, function( err, $ ) {
+            // we got page data, yay, its loaded, so tick it
+            self.payloadItemTick( 'regions', 1 );
+            // grab the object containing the HTML we need to parse. We need to crawl this data
+            // first to find out what the payload is so we can cease processing when it's complete
+            // not doing this will create race conditions since this is a non blocking IO 
+            pageData.push( $ );
+            // get the counts
+            self.analysePage( $ );
 
-              // lets see if it's alreay there 
-              self.getModel( 'stores' ).find( { title: store.title, city: store.city, state: store.state }, function( err, docs ) {
-                if( err ) {
-                  throw err;
-                }
+            // if all tha pages are loaded, and analysed, lets move on to parsing
+            if( self.payloadMet( 'regions' ) ) {
+                // move along
+                __( '@ regions and page processing complete. Ended up with this many: ', self.getPayloadItemsLoaded( 'regions' ) );
+                __( '@ how many dispensaries?: ', self.getPayload( 'dispensaries' ) );
+                __( '@ moving to store urls' );
 
-                if( docs.length ) {
-                  // lets add the url array to the new document so they are all carried through
-                  docs[ 0 ].urls = docs[ 0 ].urls.concat( store.urls );
-                  // it's already an entry, so just update the last updated
-                  self.getModel( 'stores' ).update(
-                    { _id: docs[ 0 ]._id  },
-                    { lastMenuUpdate: docs[ 0 ].lastMenuUpdate },
-                    { upsert: false },
-                    function ( err, count ) {
-                      if( err ) {
-                          throw err;
-                      } else {
-                          __('updated', count);
-                      }
-                    }
-                  );
-                } else {
-                  self.getModel( 'stores' ).create( store, function( err, document ) {
-                    if( err ) throw err;
-                    __('saved', document);
-                  });
-                }
-              });
-            });
-          } catch( e ) {
-            __( e );
-          }
+                self.saveResults();
+                
+            }
         });
-      },
-      extractDate: function( date ) {
+        return self;
+    },
+
+    processRecords: function( docs ) {
         var self = this;
-        date = date.replace(/\//g, '');
-        var freshDate = eval( 'new ' + date );
-        if( self.validDate( freshDate ) ) {
-          return freshDate;
+        // make this as atomic as possible
+        if( undefined === docs ) {
+            // there needs to be some urls, or something went wrong, need to rerun previous controller
+            self.dispatch( DISPENSARY_CONTROLLER_ERROR );
+            return;
+        }
+
+        for( var i in docs ) {
+            // concat url to request
+            var page = self.urlScheme( docs[ i ].slug );
+            
+            // fetching page
+            self.requestPage( page, i );
+        }
+    },
+
+    /* DATA FUNCTIONS */
+
+    connect : function() {
+        var self = this;
+        mongoose.connect('mongodb://localhost/ganjazoid');
+        db = mongoose.connection;
+        db.on( 'error', function() {
+            console.log( 'connection error' );
+        });
+        db.once( 'open', function() {
+            console.log( 'connection open' );
+            self.start();
+        });
+    },
+
+    getSchemas: function() {
+        var self = this;
+        RegionSchema        = mongoose.Schema( schemas.get( 'stickyguide_region' ) );
+        SubregionSchema     = mongoose.Schema( schemas.get( 'stickyguide_subregion' ) );
+        DispensarySchema    = mongoose.Schema( schemas.get( 'stickyguide_dispensary' ) );
+        return self;
+    },
+
+    getModels: function() {
+        var self = this;
+        RegionModel         = mongoose.model( 'stickyguide_region',     RegionSchema );
+        SubregionModel      = mongoose.model( 'stickyguide_subregion',  SubregionSchema );
+        DispensaryModel     = mongoose.model( 'stickyguide_dispensary', DispensarySchema );
+        return self;
+    },
+
+    getRecords: function() {
+        var self = this;
+        RegionModel.find( { site: 'stickyguide.com' }, function( err, docs ) {
+            console.log( '@ records results' );
+            if( err ) {
+                console.log( '@ERROR could not select records ', err  );
+                self.dispatch( DISPENSARY_CONTROLLER_ERROR );
+                return false;
+            } else {
+                // set how many pages we're expecting to process
+                self.setPayload( 'regions', docs.length );
+                self.processRecords( docs );
+            }
+        });
+        return self;
+    },
+
+    saveResults: function() {
+        //pageData
+        var self = this,
+            document;
+
+        for( var i in pageData ) {
+
+            var $ = pageData[ i ], 
+                    collection = $( '#dispensaries-list .dispensaries li' );
+            
+            if( collection ) {
+                var  z = 0;
+                collection.each( function( node ) {
+
+                    var info            = $( '.details .alt a', node ),
+                        address_node    = $( '.details .location', node ),
+                        meta            = $( '.details .text strong', node ),
+                        url,
+                        address,
+                        title,
+                        location,
+                        lastUpdated,
+                        meta;
+
+                       z++;
+
+                    // TODO: Validation: get dispensary meta data
+                    url         = ( Validator.assert( 
+                                        Validator.constants.IS_NOT_EMPTY, 
+                                        info.attribs.href )) ? info.attribs.href : '';
+                    title       = info.children[ 0 ].raw;
+                    address     = address_node.children[ 0 ].raw;
+                    lastUpdated = meta[ meta.length - 1 ].children[ 0 ].raw;
+
+                    document = {
+                        url:url,
+                        title:title,
+                        address:address,
+                        location:location,
+                        lastUpdated:lastUpdated
+                    };
+
+                    DispensaryModel.update(
+                    { 
+                        title: document.title, 
+                        location: document.location 
+                    }, // criteria
+                    {
+                        url: document.url,
+                        title: document.title,
+                        address: document.address,
+                        location: document.location,
+                        lastUpdated: new Date( document.lastUpdated )
+                    }, // new data
+                    {
+                        upsert: true
+                    }, // create new doc if not found
+                    function( err, updatedCount ) {
+                        if( err ) {
+                            console.log( '@ERROR document not written', err );
+                            // if a record wasn't written, deduct from the expected total by one
+                            self.payloadTick( 'dispensaries', -1 );
+                        } else {
+                            if( updatedCount < 1  ) {
+                                l( '@ERROR could not save record' );
+                            }
+
+                            self.payloadItemTick( 'dispensaries', 1 );
+                            if( self.payloadMet( 'dispensaries' ) ) {
+                                l( '@ expecting to find ', self.getPayload( 'dispensaries' ) );
+                                DispensaryModel.find( { site: "stickyguide.com" }, function( err, docs ) {
+                                    console.log( docs.lenth + ' in mongo', err );
+                                    self.endProcess( '@@ process complete' );
+                                });
+                            }
+                        }
+                    });
+                });
+            } else {
+                console.log( '@@ ERROR collection not found for page: ', pageData[ i ] );
+                self.endProcess( '@@ process complete' );
+            }
+        }
+    },
+
+    /* UTILITY FUNCTIONS */
+
+    payloadInit: function( nameOfPayload ) {
+        var self = this        
+        payloads[ nameOfPayload + PAYLOAD_LOAD      ] = 0;
+        payloads[ nameOfPayload + PAYLOAD_LOADED    ] = 0;
+        payloads[ nameOfPayload + PAYLOAD_COMPLETE  ] = false;
+    },
+
+    getPayload: function( which ) {
+        var self = this;
+        return payloads[ which + PAYLOAD_LOAD ];
+    },
+
+    getPayloadItemsLoaded: function( which ) {
+        var self = this;
+        return payloads[ which + PAYLOAD_LOADED ];
+    },
+
+    setPayload: function( which, value ) {
+        var self = this;
+        console.log( 'setPayload: ', 'which:', which, 'value: ', value );
+        payloads[ which + PAYLOAD_LOAD ] = value;
+        return;
+    },
+
+    payloadItemTick: function( which, value ) {
+        var self = this;
+        return payloads[ which + PAYLOAD_LOADED ] += value;
+    },
+
+    payloadTick: function( which, value ) {
+        var self = this;
+        return payloads[ which + PAYLOAD_LOAD ] += value;
+    },
+
+    payloadMet: function( which ) {
+        var self = this, result;
+
+        if ( payloads[ which + PAYLOAD_LOAD ] === payloads[ which + PAYLOAD_LOADED ] ) {
+            console.log( '@ Payload met: ' + which );
+            payloads[ which + PAYLOAD_COMPLETE ] = true;
+            result = true;
         } else {
-          return new Date('1980-01-01:00:00:00');
+            result = false;
         }
-      },
-      validDate: function( d ) {
+        return result;
+    },
+    
+    endProcess: function() {
         var self = this;
-        if ( Object.prototype.toString.call( d ) !== "[object Date]" ) {
-          return false;
+        self.dispatch( DISPENSARY_CONTROLLER_COMPLETE );
+    },
+
+    urlScheme: function( piece ) {
+        var self = this;
+        return 'https://www.stickyguide.com' + piece + '/dispensary-finder';
+    },
+
+    listen: function( event, callback ) {
+        var self = this;
+        self.callbacks.push({ event: event, callback: callback});
+    },
+
+    dispatch: function( event ) {
+        var self = this;
+        for( var i in self.callbacks ) {
+            if( event === self.callbacks[ i ].event ) {
+                self.callbacks[ i ].callback({
+                    message: "Dispensary Controller: processing complete "
+                });
+            }
         }
-        return !isNaN(d.getTime());
-      }
     }
 
+}
+
+// RUNNER
 exports.job = new nodeio.Job({
-    timeout: 240,   // process life max
+    timeout: 120,   // process life max
     retries: 3,     //
     max: 120        // threads max
-},{
+},
+{
     input: false,
     run: function() {
-        scope = this;
-        var arg = null;
-        if( process.argv.length > 4 ) {
-          arg =  process.argv[ 4 ];
-        } 
-        listCrawler = _.extend( base.create(), listCrawler );
-        listCrawler.listen( listCrawler.constants.PROCESS_COMPLETE, function() {
-          scope.emit();
+        var me    = this;
+        scope     = this;
+        var dispensaryController = new DispensaryController();
+        dispensaryController.listen( DISPENSARY_CONTROLLER_COMPLETE, function( event ) {
+            console.log( '## received process end with success' );
+            me.emit( event.message );
         });
-        listCrawler.init( [ 'stores' ], 'start', arg );
+        dispensaryController.listen( DISPENSARY_CONTROLLER_ERROR, function( event ) {
+            me.error( event.message );
+        });
+        try {
+            dispensaryController.init();
+        } catch( e ) {
+            console.log( e );
+            this.error( e );
+        }
     }
 });
-
