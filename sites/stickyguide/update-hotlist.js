@@ -36,6 +36,7 @@ var ScrapeController,
     originalData    = null,
     pageURLs        = [],
     pageURLtypes    = [],
+    dispensaryIDs   = [],
     stickyGuideTypes = [
         'topicals',
         'accessories',
@@ -94,6 +95,7 @@ var ScrapeController,
                             var newUrl = self.formatURL( v.url, true, true, _v ); //slug, absolutePath, addTail, schema
                             pageURLs.push( newUrl );
                             pageURLtypes.push( _v );
+                            dispensaryIDs.push( v._id );
                         });                        
                     });
                     // for testing, use override=http://url for single use
@@ -227,6 +229,7 @@ var ScrapeController,
                 PriceModel.s   = config.setting( 'constants' ).STICKYGUIDE,
                 PriceModel.ty  = pageURLtypes[ cur ],
                 PriceModel.cr  = new Date();
+                PriceModel.d   = dispensaryIDs[ cur ];
                 PriceModel.ps  = [];
 
                 for( var z = 0; z < nodeGroup.stats.length; z++ ) {

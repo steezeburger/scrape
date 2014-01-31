@@ -69,17 +69,21 @@ var nodeio  = require( 'node.io' ),
 
                   title = title.children[0].raw;
                   _.each( overview, function( _value, _i, _object ) {
+
+                    __( 'd id', urls[ payloads.cur( 'leafly_dispensary_urls' ) ]._id );
+
                     var strainName = null,
                         prices     = null,
                         pieces     = [],
                         unit, 
                         value,
                         price = {
-                          t: null,
-                          n: '',
+                          t:  null,
+                          n:  '',
                           ty: title.toLowerCase(),
-                          s: config.setting( 'constants' ).LEAFLY,
+                          s:  config.setting( 'constants' ).LEAFLY,
                           ps: [],
+                          d:  urls[ payloads.cur( 'leafly_dispensary_urls' ) ]._id,
                           cr: new Date()
                         }
 
@@ -119,8 +123,9 @@ var nodeio  = require( 'node.io' ),
 
                       self.getModel( 'items' ).create( price, function( err, doc ) {
                         if( err ) {
+                          __( 'error!', err );
                         } else {
-
+                          
                         }
                       });
                     } else {

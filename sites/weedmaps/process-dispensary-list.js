@@ -157,6 +157,7 @@ var nodeio  = require( 'node.io' ),
                           u: "unit"
                         }
                     ],
+                    d:  dispensaries[ curIndex ]._id,
                     ca: new Date()
                   };
                   self.getModel( 'items' ).create( price, function( err, savedItem ) {
