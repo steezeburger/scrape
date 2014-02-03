@@ -18,6 +18,8 @@ var nodeio  = require( 'node.io' ),
     scope   = {},
     summary = {},
     payloads = {},
+    cur     = null,
+    limit   = null,
     siteURL = 'http://www.leafly.com/dispensary-info/',
     urls    = [],
     scraper = {
@@ -35,11 +37,16 @@ var nodeio  = require( 'node.io' ),
           if( err ) {
             __( 'err', err );
           }
-          
-          __( docs.length );
 
-          payloads.set( 'leafly_dispensary_urls', docs.length - 1 );
+          limit = ( self.endAt ) ? self.endAt : docs.length - 1; // 1 to test
+
+          payloads.set( 'leafly_dispensary_urls', limit );
           urls = docs;
+
+          if( self.startAt ) {
+              cur = self.startAt;
+          } 
+
           self.getMenu();
         });
         
@@ -69,8 +76,6 @@ var nodeio  = require( 'node.io' ),
 
                   title = title.children[0].raw;
                   _.each( overview, function( _value, _i, _object ) {
-
-                    __( 'd id', urls[ payloads.cur( 'leafly_dispensary_urls' ) ]._id );
 
                     var strainName = null,
                         prices     = null,
@@ -159,7 +164,7 @@ exports.job = new nodeio.Job({
     __( 'run' );
     scope = this;
     scraper = _.extend( base.create(), scraper );
-    scraper.listen( scraper.constants.PROCESS_COMPLETE, function() {
+    scraper.listen( scraper.constants.COMPLETE, function() {
       scope.emit();
     });
     try {

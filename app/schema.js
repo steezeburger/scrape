@@ -81,6 +81,7 @@ exports.get = function( which ) {
                 n:  String,         // normalized value
                 ty: String,         // type
                 s:  String,         // source 0=weedmaps,1=leafly,2=stickyguide
+                d:  String,         // dispensary id
                 ps: [               // prices
                     { 
                         p: Number,  // price
@@ -160,6 +161,17 @@ exports.get = function( which ) {
                         exitCode:   String 
                     }
                 ]
+            }
+        break;
+        case 'job_queue':
+            schema = {
+                isRunning:  Boolean,
+                alias:      String,
+                runDate:    Date,
+                total:      Number,
+                started:    Date,
+                completed:  Date,
+                exitCode:   String 
             }
         break;
     }

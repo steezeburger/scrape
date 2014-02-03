@@ -8,6 +8,16 @@ configuration.prototype = {
 		WEEDMAPS:    3,
 		SCRAPETIMEOUT: 120
 	},
+	batchList: [
+		'leafly/scrape-menus',
+		'weedmaps/process-dispensary-list',
+		'stickyguide/update-hotlist'
+	],
+	urlList: [
+		'weedmaps_dispensary_urls', 
+		'leafly_dispensary_urls', 
+		'stickyguide_dispensary'
+	],
 	set: function( key, value ) {
 		this[ key ] = value;
 		return self[ key ];

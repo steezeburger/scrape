@@ -81,7 +81,6 @@ var nodeio  = require( '../node_modules/node.io' ),
                         console.log('exec error: ' + error);
                     }
                 });
-
             }
         }
     }
@@ -92,4 +91,10 @@ moduleName.listen( moduleName.constants.COMPLETE, function( msg ) {
   process.exit( msg );
 });
 
-moduleName.init( [ 'weedmaps_dispensary_urls', 'leafly_dispensary_urls', 'stickyguide_dispensary' ], 'start', process.argv );
+
+moduleName.init( config.setting( 'urlList' ), 'start', process.argv );
+
+/*exports.init = function () {
+    __( 'opening windows' );
+    moduleName.init( [ config.settings( 'urlList' ) ], 'start', process.argv );
+}*/
