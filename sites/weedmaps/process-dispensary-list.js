@@ -7,7 +7,7 @@
     *                 
     * @dependencies:  node.io, underscore, request
     **/
-
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 var nodeio  = require( 'node.io' ),
     _       = require( 'underscore' ),
     request = require( 'request' ),

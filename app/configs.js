@@ -6,17 +6,20 @@ configuration.prototype = {
 		STICKYGUIDE: 1,
 		LEAFLY: 	 2,
 		WEEDMAPS:    3,
+		HARBORSIDE:  4,
 		SCRAPETIMEOUT: 120
 	},
 	batchList: [
 		'leafly/scrape-menus',
 		'weedmaps/process-dispensary-list',
-		'stickyguide/update-hotlist'
+		'stickyguide/update-hotlist',
+		'harborside/items'
 	],
 	urlList: [
 		'weedmaps_dispensary_urls', 
 		'leafly_dispensary_urls', 
-		'stickyguide_dispensary'
+		'stickyguide_dispensary',
+		'harborside_urls'
 	],
 	set: function( key, value ) {
 		this[ key ] = value;

@@ -174,6 +174,28 @@ exports.get = function( which ) {
                 exitCode:   String 
             }
         break;
+        case 'harborside_urls':
+            schema = {
+                url:   String,
+                type: String
+            }
+        break;
+        case 'harborside_items':               // new version of prices
+            schema = {
+                t:  String,         // title
+                n:  String,         // normalized value
+                ty: String,         // type
+                s:  String,         // source 0=weedmaps,1=leafly,2=stickyguide
+                d:  String,         // dispensary id
+                ps: [               // prices
+                    { 
+                        p: Number,  // price
+                        u: String   // unit
+                    }
+                ],
+                cr: Date
+            }
+        break;
     }
     return schema;
 };

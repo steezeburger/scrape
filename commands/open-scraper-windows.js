@@ -25,6 +25,7 @@ var nodeio  = require( '../node_modules/node.io' ),
         stickyguide: { list: 'stickyguide_dispensary',   id: 1 },
         leafly:      { list: 'leafly_dispensary_urls',   id: 2 },
         weedmaps:    { list: 'weedmaps_dispensary_urls', id: 3 },
+        harborside:  { list: 'harborside_urls',          id: 4 },
         cleaner:     { list: 'items',                    id: false }
     }
     batchSize = 1000;
@@ -80,6 +81,7 @@ var nodeio  = require( '../node_modules/node.io' ),
                     if (error !== null) {
                         console.log('exec error: ' + error);
                     }
+                    moduleName.dispatch( moduleName.constants.COMPLETE );
                 });
             }
         }

@@ -3,15 +3,7 @@
 	[
 		{
 			"follow_symlinks": true,
-			"path": "/Users/KBK/Dropbox/ganjazoid2/scrape"
-		},
-		{
-			"follow_symlinks": true,
-			"path": "/Users/newuser/Dropbox/ganjazoid2/scrape"
-		},
-		{
-			"follow_symlinks": true,
-			"path": "/Users/brian.kenny/Dropbox/ganjazoid2"
+			"path": "/Users/KBK/Dropbox/ganjazoid2/scrape.v1"
 		}
 	]
 }
